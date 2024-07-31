@@ -1,9 +1,11 @@
 import { Router, Request, Response } from 'express';
 
+import { UsersController } from './controllers/UsersController';
+
+const usersController = new UsersController();
+
 const router = Router();
 
-router.get('/', (req: Request, res: Response) => {
-  res.send('Hello World');
-});
+router.post('/users', usersController.create);
 
 export default router;
