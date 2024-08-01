@@ -2,13 +2,40 @@ import { Request, Response } from 'express';
 import { UsersService } from '../services/UserService';
 
 export class UsersController {
-  async create(request: Request, response: Response) {
-    const { name, email, password } = request.body;
+  async create(request: Request, response: Response): Promise<Response> {
+    const {
+      fullName,
+      email,
+      password,
+      skills,
+      experience,
+      description,
+      location,
+    } = request.body;
 
     const usersService = new UsersService();
 
-    const user = await usersService.create({ name, email, password });
+    try {
+      const user = await usersService.createUser({
+        fullName,
+        email,
+        password,
+        description,
+        skills,
+        experience,
+        location,
+      });
 
-    return response.status(201).json(user);
+      return response.status(201).json({
+        name: user.fullName,
+        email: user.email,
+        description: user.description,
+        skills: user.skills,
+        experience: user.experience,
+        location: user.location,
+      });
+    } catch (error) {
+      return response.status(400).json({ error: error.message });
+    }
   }
 }

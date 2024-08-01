@@ -3,9 +3,13 @@ import { User } from '../entities/User';
 import { UsersRepository } from '../repositories/UsersRepository';
 
 interface ICreateUser {
-  name: string;
+  fullName: string;
   email: string;
   password: string;
+  description: string;
+  skills: string[];
+  experience: string;
+  location: string;
 }
 
 export class UsersService {
@@ -15,7 +19,15 @@ export class UsersService {
     this.userRepository = getCustomRepository(UsersRepository);
   }
 
-  async create({ name, email, password }: ICreateUser) {
+  async createUser({
+    fullName,
+    email,
+    password,
+    skills,
+    experience,
+    description,
+    location,
+  }: ICreateUser) {
     const userExists = await this.userRepository.findOne({
       email,
     });
@@ -25,9 +37,13 @@ export class UsersService {
     }
 
     const user = this.userRepository.create({
-      name,
+      fullName,
       email,
       password,
+      skills,
+      experience,
+      description,
+      location,
     });
 
     await this.userRepository.save(user);

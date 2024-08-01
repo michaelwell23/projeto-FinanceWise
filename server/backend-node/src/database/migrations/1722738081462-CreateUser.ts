@@ -2,9 +2,11 @@ import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class CreateUser1722738081462 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
+
     await queryRunner.createTable(
       new Table({
-        name: 'user',
+        name: 'users',
         columns: [
           {
             name: 'id',
@@ -14,7 +16,7 @@ export class CreateUser1722738081462 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'name',
+            name: 'fullName',
             type: 'varchar',
           },
           {
@@ -27,9 +29,35 @@ export class CreateUser1722738081462 implements MigrationInterface {
             type: 'varchar',
           },
           {
+            name: 'description',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'skills',
+            type: 'text',
+            isArray: true,
+            isNullable: true,
+          },
+          {
+            name: 'experience',
+            type: 'text',
+            isNullable: true,
+          },
+          {
+            name: 'profilePicture',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'location',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
             name: 'createdAt',
             type: 'timestamp',
-            default: 'now()',
+            default: 'CURRENT_TIMESTAMP',
           },
           {
             name: 'updatedAt',
@@ -42,6 +70,6 @@ export class CreateUser1722738081462 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('user');
+    await queryRunner.dropTable('users');
   }
 }
