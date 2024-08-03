@@ -1,6 +1,8 @@
+import bcrypt from 'bcrypt';
 import { getCustomRepository, getRepository } from 'typeorm';
 import { User } from '../entities/User';
 import { UsersRepository } from '../repositories/UsersRepository';
+import { error } from 'console';
 
 interface ICreateUser {
   fullName: string;
@@ -33,13 +35,15 @@ export class UsersService {
     });
 
     if (userExists) {
-      return userExists;
+      throw new error('There is a registered user with this email');
     }
+
+    const passwordHash = await bcrypt.hash(password, 10);
 
     const user = this.userRepository.create({
       fullName,
       email,
-      password,
+      password: passwordHash,
       skills,
       experience,
       description,
