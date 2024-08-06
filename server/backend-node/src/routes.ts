@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
 import multer from 'multer';
 
 import { UsersController } from './controllers/UsersController';
@@ -9,6 +9,8 @@ const upload = multer(multerConfig);
 
 const usersController = new UsersController();
 
-router.post('/users', upload.single('avatar'), usersController.create);
+router.post('/users', upload.single('avatar'), usersController.createUsers);
+router.get('/users', usersController.getAllUsers);
+router.get('/users/:id', usersController.getUserById);
 
 export default router;

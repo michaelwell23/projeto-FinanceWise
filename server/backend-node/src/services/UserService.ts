@@ -1,8 +1,9 @@
 import bcrypt from 'bcrypt';
-import { getCustomRepository, getRepository } from 'typeorm';
+import { getCustomRepository, Repository } from 'typeorm';
+import { error } from 'console';
+
 import { User } from '../entities/User';
 import { UsersRepository } from '../repositories/UsersRepository';
-import { error } from 'console';
 
 interface ICreateUser {
   fullName: string;
@@ -16,13 +17,18 @@ interface ICreateUser {
 }
 
 export class UsersService {
-  private userRepository = getRepository(User);
+  private userRepository: Repository<User>;
+
+  private excludePassword(user: User): Omit<User, 'password'> {
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
+  }
 
   constructor() {
     this.userRepository = getCustomRepository(UsersRepository);
   }
 
-  async createUser({
+  public async createUser({
     fullName,
     email,
     password,
@@ -55,6 +61,30 @@ export class UsersService {
 
     await this.userRepository.save(user);
 
-    return user;
+    return this.excludePassword(user);
+  }
+
+  public async getAllUsers(): Promise<Omit<User, 'password'>[]> {
+    const users = await this.userRepository.find();
+
+    const usersWithoutPassword = users.map((user) =>
+      this.excludePassword(user)
+    );
+
+    return usersWithoutPassword;
+  }
+
+  public async getUserById(
+    id: string
+  ): Promise<Omit<User, 'password'> | undefined> {
+    const user = await this.userRepository.findOne(id);
+
+    if (!user) {
+      throw new error('User does not exist!');
+    }
+
+    const userWithoutPassword = this.excludePassword(user);
+
+    return userWithoutPassword;
   }
 }

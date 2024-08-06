@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { UsersService } from '../services/UserService';
 
 export class UsersController {
-  async create(request: Request, response: Response): Promise<Response> {
+  async createUsers(request: Request, response: Response): Promise<Response> {
     const {
       fullName,
       email,
@@ -13,9 +13,9 @@ export class UsersController {
       location,
     } = request.body;
 
-    const avatar = request.file?.filename;
-
     const usersService = new UsersService();
+
+    const avatar = request.file?.filename;
 
     try {
       const user = await usersService.createUser({
@@ -33,17 +33,37 @@ export class UsersController {
         ? `http://localhost:3333/uploads/${avatar}`
         : null;
 
-      return response.status(201).json({
-        name: user.fullName,
-        email: user.email,
-        description: user.description,
-        skills: user.skills,
-        experience: user.experience,
-        location: user.location,
-        avatar: avatarUrl,
-      });
+      return response.status(201).json(user);
     } catch (error) {
       return response.status(400).json({ error: error.message });
+    }
+  }
+
+  async getAllUsers(request: Request, response: Response): Promise<Response> {
+    try {
+      const usersService = new UsersService();
+
+      const user = await usersService.getAllUsers();
+      return response.status(200).json(user);
+    } catch (error) {
+      return response.status(500).json({ error: 'Erro ao obter usuários' });
+    }
+  }
+
+  async getUserById(request: Request, response: Response): Promise<Response> {
+    try {
+      const { id } = request.params;
+
+      const usersService = new UsersService();
+
+      const user = await usersService.getUserById(id);
+      if (user) {
+        return response.json(user);
+      } else {
+        return response.status(404).json({ error: 'Usuário não encontrado' });
+      }
+    } catch (error) {
+      return response.status(500).json({ error: 'Erro ao obter usuário' });
     }
   }
 }
