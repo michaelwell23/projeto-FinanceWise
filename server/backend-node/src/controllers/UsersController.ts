@@ -13,6 +13,8 @@ export class UsersController {
       location,
     } = request.body;
 
+    const avatar = request.file?.filename;
+
     const usersService = new UsersService();
 
     try {
@@ -24,7 +26,12 @@ export class UsersController {
         skills,
         experience,
         location,
+        avatar,
       });
+
+      const avatarUrl = avatar
+        ? `http://localhost:3333/uploads/${avatar}`
+        : null;
 
       return response.status(201).json({
         name: user.fullName,
@@ -33,6 +40,7 @@ export class UsersController {
         skills: user.skills,
         experience: user.experience,
         location: user.location,
+        avatar: avatarUrl,
       });
     } catch (error) {
       return response.status(400).json({ error: error.message });

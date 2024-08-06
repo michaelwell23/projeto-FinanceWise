@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -24,11 +30,14 @@ export class User {
   experience: string;
 
   @Column({ nullable: true })
-  profilePicture: string;
+  location: string;
 
   @Column({ nullable: true })
-  location: string;
+  avatar: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  updatedAt: Date;
 }

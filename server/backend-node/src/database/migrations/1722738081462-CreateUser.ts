@@ -45,12 +45,12 @@ export class CreateUser1722738081462 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'profilePicture',
+            name: 'location',
             type: 'varchar',
             isNullable: true,
           },
           {
-            name: 'location',
+            name: 'avatar',
             type: 'varchar',
             isNullable: true,
           },

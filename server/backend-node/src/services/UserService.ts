@@ -12,6 +12,7 @@ interface ICreateUser {
   skills: string[];
   experience: string;
   location: string;
+  avatar?: string;
 }
 
 export class UsersService {
@@ -29,6 +30,7 @@ export class UsersService {
     experience,
     description,
     location,
+    avatar,
   }: ICreateUser) {
     const userExists = await this.userRepository.findOne({
       email,
@@ -48,6 +50,7 @@ export class UsersService {
       experience,
       description,
       location,
+      avatar,
     });
 
     await this.userRepository.save(user);
