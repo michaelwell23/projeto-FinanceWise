@@ -66,4 +66,32 @@ export class UsersController {
       return response.status(500).json({ error: 'Erro ao obter usuário' });
     }
   }
+
+  public async upadate(
+    request: Request,
+    response: Response
+  ): Promise<Response> {
+    try {
+      const { id } = request.params;
+      const userData = request.body;
+
+      const usersService = new UsersService();
+
+      const updatedUser = await usersService.updateUser(id, userData);
+
+      if (updatedUser) {
+        return response.json(updatedUser);
+      } else {
+        return response.status(404).json({ error: 'Usuário não encontrado' });
+      }
+    } catch (error) {
+      if (
+        error.message === 'Senha atual inválida' ||
+        error.message === 'Senha atual é obrigatória para trocar a senha'
+      ) {
+        return response.status(401).json({ error: error.message });
+      }
+      return response.status(500).json({ error: 'Erro ao atualizar usuário' });
+    }
+  }
 }

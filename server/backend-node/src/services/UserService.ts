@@ -16,6 +16,17 @@ interface ICreateUser {
   avatar?: string;
 }
 
+interface IUpdatedUser {
+  fullName?: string;
+  email?: string;
+  description?: string;
+  skills?: string[];
+  experience?: string;
+  location?: string;
+  newPassword?: string;
+  currentPassword?: string;
+}
+
 export class UsersService {
   private userRepository: Repository<User>;
 
@@ -86,5 +97,33 @@ export class UsersService {
     const userWithoutPassword = this.excludePassword(user);
 
     return userWithoutPassword;
+  }
+
+  public async updateUser(
+    id: string,
+    userData: IUpdatedUser
+  ): Promise<Omit<User, 'password'> | undefined> {
+    const user = await this.userRepository.findOne(id);
+
+    if (!user) {
+      throw new error('User not found.');
+    }
+
+    if (userData.newPassword) {
+      const isPasswordValid = await bcrypt.compare(
+        userData.currentPassword,
+        user.password
+      );
+
+      if (!isPasswordValid) {
+        throw new Error('Invalid data, please try again');
+      }
+      user.password = await bcrypt.hash(userData.newPassword, 10);
+    }
+
+    Object.assign(user, userData);
+    await this.userRepository.save(user);
+
+    return this.excludePassword(user);
   }
 }

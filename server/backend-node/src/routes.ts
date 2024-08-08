@@ -12,5 +12,6 @@ const usersController = new UsersController();
 router.post('/users', upload.single('avatar'), usersController.createUsers);
 router.get('/users', usersController.getAllUsers);
 router.get('/users/:id', usersController.getUserById);
+router.put('/users/:id', usersController.upadate);
 
 export default router;
