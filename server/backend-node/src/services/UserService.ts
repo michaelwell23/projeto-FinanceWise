@@ -4,6 +4,7 @@ import { error } from 'console';
 
 import { User } from '../entities/User';
 import { UsersRepository } from '../repositories/UsersRepository';
+import { response } from 'express';
 
 interface ICreateUser {
   fullName: string;
@@ -125,5 +126,17 @@ export class UsersService {
     await this.userRepository.save(user);
 
     return this.excludePassword(user);
+  }
+
+  public async deleteUser(id: string): Promise<boolean> {
+    const user = await this.userRepository.findOne(id);
+
+    if (!user) {
+      throw new error('User not found!');
+    }
+
+    await this.userRepository.remove(user);
+
+    return true;
   }
 }

@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
-import { UsersService } from '../services/UserService';
+import { UsersService } from './../services/UserService';
+import { Request, Response, request, response } from 'express';
 
 export class UsersController {
   async createUsers(request: Request, response: Response): Promise<Response> {
@@ -13,9 +13,9 @@ export class UsersController {
       location,
     } = request.body;
 
-    const usersService = new UsersService();
-
     const avatar = request.file?.filename;
+
+    const usersService = new UsersService();
 
     try {
       const user = await usersService.createUser({
@@ -33,7 +33,16 @@ export class UsersController {
         ? `http://localhost:3333/uploads/${avatar}`
         : null;
 
-      return response.status(201).json(user);
+      return response.status(201).json({
+        fullName,
+        email,
+        password,
+        description,
+        skills,
+        experience,
+        location,
+        avatar: avatarUrl,
+      });
     } catch (error) {
       return response.status(400).json({ error: error.message });
     }
@@ -92,6 +101,24 @@ export class UsersController {
         return response.status(401).json({ error: error.message });
       }
       return response.status(500).json({ error: 'Erro ao atualizar usuário' });
+    }
+  }
+
+  public async delete(request: Request, response: Response): Promise<Response> {
+    try {
+      const { id } = request.params;
+
+      const usersService = new UsersService();
+
+      const userDeleted = await usersService.deleteUser(id);
+
+      if (userDeleted) {
+        return response
+          .status(200)
+          .json({ message: 'User deleted successfully' });
+      }
+    } catch (err) {
+      return response.status(500).json({ error: 'Error deleting user' });
     }
   }
 }
