@@ -83,24 +83,26 @@ export class UsersController {
     try {
       const { id } = request.params;
       const userData = request.body;
+      const file = request.file;
 
       const usersService = new UsersService();
 
-      const updatedUser = await usersService.updateUser(id, userData);
+      const updatedUser = await usersService.updateUser(id, userData, file);
 
       if (updatedUser) {
         return response.json(updatedUser);
       } else {
-        return response.status(404).json({ error: 'Usuário não encontrado' });
+        return response.status(404).json({ error: 'User not found' });
       }
     } catch (error) {
       if (
-        error.message === 'Senha atual inválida' ||
-        error.message === 'Senha atual é obrigatória para trocar a senha'
+        error.message === 'Password is invalid ' ||
+        error.message === 'Current password is required to change password' ||
+        error.message === 'Old password is required to update password.'
       ) {
         return response.status(401).json({ error: error.message });
       }
-      return response.status(500).json({ error: 'Erro ao atualizar usuário' });
+      return response.status(500).json({ error: 'Error updating user' });
     }
   }
 

@@ -24,8 +24,8 @@ interface IUpdatedUser {
   skills?: string[];
   experience?: string;
   location?: string;
-  newPassword?: string;
   currentPassword?: string;
+  newPassword?: string;
 }
 
 export class UsersService {
@@ -102,7 +102,8 @@ export class UsersService {
 
   public async updateUser(
     id: string,
-    userData: IUpdatedUser
+    userData: IUpdatedUser,
+    file?: Express.Multer.File
   ): Promise<Omit<User, 'password'> | undefined> {
     const user = await this.userRepository.findOne(id);
 
@@ -110,7 +111,7 @@ export class UsersService {
       throw new error('User not found.');
     }
 
-    if (userData.newPassword) {
+    if (userData.currentPassword) {
       const isPasswordValid = await bcrypt.compare(
         userData.currentPassword,
         user.password
@@ -119,13 +120,25 @@ export class UsersService {
       if (!isPasswordValid) {
         throw new Error('Invalid data, please try again');
       }
+
+      if (!userData.newPassword) {
+        throw new Error('New password is required to update password.');
+      }
+
       user.password = await bcrypt.hash(userData.newPassword, 10);
+    } else if (userData.newPassword) {
+      throw new Error('Old password is required to update password.');
     }
 
-    Object.assign(user, userData);
+    if (file) {
+      user.avatar = file.fieldname;
+    }
+
     await this.userRepository.save(user);
 
-    return this.excludePassword(user);
+    const { password, ...userWithoutPassword } = user;
+
+    return userWithoutPassword;
   }
 
   public async deleteUser(id: string): Promise<boolean> {
