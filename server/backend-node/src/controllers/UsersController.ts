@@ -1,5 +1,6 @@
 import { UsersService } from './../services/UserService';
 import { Request, Response, request, response } from 'express';
+import { generateToken } from '../config/auth';
 
 export class UsersController {
   async createUsers(request: Request, response: Response): Promise<Response> {
@@ -33,15 +34,20 @@ export class UsersController {
         ? `http://localhost:3333/uploads/${avatar}`
         : null;
 
+      const token = generateToken(user.id);
+
       return response.status(201).json({
-        fullName,
-        email,
-        password,
-        description,
-        skills,
-        experience,
-        location,
-        avatar: avatarUrl,
+        user: {
+          fullName,
+          email,
+          password,
+          description,
+          skills,
+          experience,
+          location,
+          avatar: avatarUrl,
+        },
+        token,
       });
     } catch (error) {
       return response.status(400).json({ error: error.message });

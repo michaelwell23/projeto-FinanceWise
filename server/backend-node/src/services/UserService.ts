@@ -1,10 +1,8 @@
 import bcrypt from 'bcrypt';
 import { getCustomRepository, Repository } from 'typeorm';
-import { error } from 'console';
 
 import { User } from '../entities/User';
 import { UsersRepository } from '../repositories/UsersRepository';
-import { response } from 'express';
 
 interface ICreateUser {
   fullName: string;
@@ -55,7 +53,7 @@ export class UsersService {
     });
 
     if (userExists) {
-      throw new error('There is a registered user with this email');
+      throw new Error('There is a registered user with this email');
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
@@ -92,7 +90,7 @@ export class UsersService {
     const user = await this.userRepository.findOne(id);
 
     if (!user) {
-      throw new error('User does not exist!');
+      throw new Error('User does not exist!');
     }
 
     const userWithoutPassword = this.excludePassword(user);
@@ -108,7 +106,7 @@ export class UsersService {
     const user = await this.userRepository.findOne(id);
 
     if (!user) {
-      throw new error('User not found.');
+      throw new Error('User not found.');
     }
 
     if (userData.currentPassword) {
@@ -145,7 +143,7 @@ export class UsersService {
     const user = await this.userRepository.findOne(id);
 
     if (!user) {
-      throw new error('User not found!');
+      throw new Error('User not found!');
     }
 
     await this.userRepository.remove(user);
