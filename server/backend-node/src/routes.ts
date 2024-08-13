@@ -1,3 +1,4 @@
+import { validateUser } from './middlewares/validateUser';
 import { Router } from 'express';
 import multer from 'multer';
 
@@ -10,7 +11,12 @@ const upload = multer(multerConfig);
 
 const usersController = new UsersController();
 
-router.post('/users', upload.single('avatar'), usersController.createUsers);
+router.post(
+  '/users',
+  upload.single('avatar'),
+  validateUser,
+  usersController.createUsers
+);
 
 router.use(authMiddleware);
 
