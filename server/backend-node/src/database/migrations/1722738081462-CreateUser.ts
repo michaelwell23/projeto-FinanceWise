@@ -34,9 +34,8 @@ export class CreateUser1722738081462 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'skills',
-            type: 'text',
-            isArray: true,
+            name: 'teachingSkills',
+            type: 'varchar',
             isNullable: true,
           },
           {
