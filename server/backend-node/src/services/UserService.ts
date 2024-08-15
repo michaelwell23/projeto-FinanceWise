@@ -9,7 +9,7 @@ interface ICreateUser {
   email: string;
   password: string;
   description: string;
-  skills: string[];
+  teachingSkills: string;
   experience: string;
   location: string;
   avatar?: string;
@@ -19,7 +19,7 @@ interface IUpdatedUser {
   fullName?: string;
   email?: string;
   description?: string;
-  skills?: string[];
+  teachingSkills?: string[];
   experience?: string;
   location?: string;
   currentPassword?: string;
@@ -42,7 +42,7 @@ export class UsersService {
     fullName,
     email,
     password,
-    skills,
+    teachingSkills,
     experience,
     description,
     location,
@@ -62,7 +62,7 @@ export class UsersService {
       fullName,
       email,
       password: passwordHash,
-      skills,
+      teachingSkills,
       experience,
       description,
       location,
