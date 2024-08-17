@@ -1,19 +1,25 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
+	"os"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Bem-vindo ao servidor Go!")
-	})
-	port := ":8080"
+	dsn := os.Getenv("DATABASE_URL")
 
-	log.Printf("Servidor rodando na porta %s...", port)
-	if err := http.ListenAndServe(port, nil); err != nil {
-		log.Fatalf("Erro ao iniciar o servidor: %v", err)
+	_, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("Falha ao conectar ao banco de dados: %v", err)
 	}
+
+	log.Println("Conexão com o banco de dados estabelecida com sucesso!")
+
+	port := ":8080"
+	log.Printf("Servidor rodando na porta %s...", port)
+	log.Fatal(http.ListenAndServe(port, nil))
 }
