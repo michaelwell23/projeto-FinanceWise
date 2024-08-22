@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import path from 'path';
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 import express from 'express';
 
 import routes from './routes';

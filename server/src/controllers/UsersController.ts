@@ -40,7 +40,6 @@ export class UsersController {
         user: {
           fullName,
           email,
-          password,
           description,
           teachingSkills,
           experience,

@@ -5,7 +5,7 @@ const userSchema = Joi.object({
   fullName: Joi.string().min(3).max(30).required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
-  skills: Joi.array().items(Joi.string()).required(),
+  teachingSkills: Joi.array().items(Joi.string()).required(),
   experience: Joi.string().required(),
   description: Joi.string().allow(''),
   location: Joi.string().required(),

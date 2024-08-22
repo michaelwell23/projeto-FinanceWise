@@ -19,7 +19,7 @@ export class User {
   description: string;
 
   @Column('text', { array: true, nullable: true })
-  teachingSkills: string;
+  teachingSkills: string[];
 
   @Column({ nullable: true })
   experience: string;

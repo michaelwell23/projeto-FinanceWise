@@ -9,7 +9,7 @@ interface ICreateUser {
   email: string;
   password: string;
   description: string;
-  teachingSkills: string;
+  teachingSkills: string[];
   experience: string;
   location: string;
   avatar?: string;
