@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Connection } from './Connection';
 
 @Entity('users')
 export class User {
@@ -29,12 +28,6 @@ export class User {
 
   @Column({ nullable: true })
   avatar: string;
-
-  @OneToMany(() => Connection, (connection) => connection.user1)
-  connectionsAsUser1: Connection[];
-
-  @OneToMany(() => Connection, (connection) => connection.user2)
-  connectionsAsUser2: Connection[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

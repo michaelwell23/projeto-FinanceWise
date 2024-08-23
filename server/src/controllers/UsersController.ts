@@ -1,5 +1,5 @@
 import { UsersService } from './../services/UserService';
-import { Request, Response, request, response } from 'express';
+import { Request, Response } from 'express';
 import { generateToken } from '../config/auth';
 
 export class UsersController {
