@@ -4,7 +4,7 @@
   "port": 5432,
   "username": "postgres",
   "password": "postgres",
-  "database": "database-node",
+  "database": "personal_dev_db",
   "synchronize": true,
   "logging": false,
   "entities": ["src/entities/*.ts"],
