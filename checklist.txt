@@ -1,120 +1,48 @@
-# Criando o arquivo de checklist solicitado pelo usuário
+Semana 1: Estrutura do Projeto
+Configuração do projeto Node.js com TypeScript.
+Configuração do banco de dados com Docker Compose + PostgreSQL ou MongoDB.
+Estruturação das pastas (ex: src, controllers, services, models, etc.).
 
-checklist = """
-# Checklist para Desenvolvimento de Aplicação em Node.js
+Semana 2: Implementação de Usuários
+Criação da migration de usuários com CPF como chave única.
+Criação do model User.
+Implementação do serviço de usuários.
+Implementação do repositório de usuários.
+Implementação do controlador de usuários.
+Implementação do hash de senha e autenticação com JWT.
+Validação de dados e CPF.
 
-## Estrutura do Projeto
-[x] 1. **Criar estrutura de pastas inicial**:
-   -  `/src`
-   -  `/src/controllers`
-   -  `/src/services`
-   -  `/src/repositories`
-   -  `/src/entities`
-   -  `/src/migrations`
-   -  `/src/config`
-   -  `/src/middlewares`
-   -  `/src/routes`
-   -  `/src/utils`
-   -  `/tests`
+Semana 3: Gestão de Tarefas e Metas
+Criação da migration para tarefas e metas.
+Criação do model Task e Goal.
+Implementação do serviço e repositório de tarefas e metas.
+Implementação do CRUD de tarefas e metas.
 
-2. **Inicializar o projeto Node.js**:
-   [x]  `npm init [ ] y`
-   [x]  Instalar dependências principais (express, dotenv, typeorm, reflect[ ] metadata, pg)
-   [x]  Instalar dependências de desenvolvimento (typescript, ts[ ] node[ ] dev, jest, supertest)
+Semana 4: Alocação Inteligente de Tempo
+Implementação do algoritmo de alocação de tarefas.
+Integração com o serviço de tarefas para distribuição automática.
+Testes e ajustes no algoritmo.
 
-3. **Configurar TypeScript**:
-   [x]  Criar `tsconfig.json`
-   [x]  Configurar paths e outDir
-   [x]  Adicionar script de build e start no `package.json`
+Semana 5: Monitoramento de Comportamento
+Criação de logs de comportamento do usuário.
+Implementação de análises básicas de padrões.
+Integração do aprendizado de máquina para otimizar sugestões.
 
-## Configuração do Banco de Dados com Docker Compose + PostgreSQL utilizando TypeORM
-1. **Criar arquivo `docker
-   [x]  compose.yml`**:
-   [x]  Configurar serviço PostgreSQL com volume persistente.
+Semana 6: Ferramentas de Apoio à Transformação Pessoal
+Implementação das ferramentas de apoio emocional.
+Criação de APIs ou integração com serviços de terceiros.
+Testes das ferramentas implementadas.
 
-2. **Configurar TypeORM**:
-   [x]  Criar arquivo `ormconfig.json` com configurações de conexão ao banco.
-   [x]  Definir entidades, migrations e subscribers no `ormconfig.json`.
+Semana 7: Sistema de Notificações
+Configuração do sistema de notificações push e e-mail.
+Implementação de notificações personalizadas para os usuários.
 
-3. **Rodar Docker Compose**:
-   [x]  `docker
-   [x] compose up  -d`
-   [x]  Verificar se o banco de dados está rodando corretamente.
+Semana 8: Relatórios e Análises
+Criação de relatórios de progresso e análises de produtividade.
+Implementação de visualização de dados para os relatórios.
+Ajustes finos e testes.
 
-## Implementação da Funcionalidade de Usuário
-
-### 1. **Migration**
-   [ ]  Criar migration para a tabela de usuários:
-   [ ]  Campos: id, nome, email, senha, data_criacao, data_atualizacao.
-   [ ]  Executar a migration.
-
-### 2. **Entities (Model)**
-   [ ]  Criar entidade `User`:
-   [ ]  Definir colunas e relacionamentos.
-   [ ]  Implementar validações básicas (e.g., email único, tamanho de senha).
-
-### 3. **Repository**
-   [ ]  Criar repositório `UserRepository`:
-   [ ]  Métodos para CRUD (Create, Read, Update, Delete).
-   [ ]  Métodos para encontrar usuário por email.
-
-### 4. **Services**
-   [ ]  Criar serviço `UserService`:
-   [ ]  Método de criação de usuário (com hash de senha).
-   [ ]  Método para autenticação (comparação de senha).
-   [ ]  Método para atualização de dados do usuário.
-
-### 5. **Controllers**
-   [ ]  Criar controlador `UserController`:
-   [ ]  Rota para criação de usuário.
-   [ ]  Rota para login (autenticação).
-   [ ]  Rota para atualização de dados do usuário.
-
-### 6. **Hash de Senha**
-   [ ]  Instalar biblioteca `bcrypt` para hash de senha.
-   [ ]  Implementar hash de senha no serviço de criação de usuário.
-   [ ]  Implementar comparação de senha para autenticação.
-
-### 7. **Configuração de Autenticação**
-   [ ]  Instalar `jsonwebtoken`.
-   [ ]  Criar middleware de autenticação JWT.
-   [ ]  Adicionar proteção nas rotas que necessitam de autenticação.
-
-### 8. **Validações**
-   [ ]  Implementar validações de entrada (e.g., email válido, senha forte).
-   [ ]  Adicionar middleware de validação para rotas de usuário.
-
-## Próximas Funcionalidades
-1. **Implementação do Questionário Big Five**:
-   [ ]  Criação das perguntas e respostas.
-   [ ]  Sistema de pontuação e análise de resultados.
-   [ ]  Armazenamento dos resultados no banco de dados.
-   [ ]  Implementação de lógica para gerar o perfil de personalidade do usuário.
-
-2. **Gerenciamento de Hábitos e Mudança de Comportamento**:
-   [ ]  Criação de hábitos personalizados.
-   [ ]  Acompanhamento de progresso e envio de lembretes.
-   [ ]  Ferramentas de autossabotagem.
-
-3. **Planejamento e Organização**:
-   [ ]  Planejador de tarefas diárias, semanais e mensais.
-   [ ]  Definição de metas e etapas.
-
-4. **Tomada de Decisão**:
-   [ ]  Ferramenta para listar prós e contras.
-   [ ]  Histórico de decisões tomadas.
-
-5. **Inteligência Emocional e Relações**:
-   [ ]  Testes de inteligência emocional.
-   [ ]  Conteúdos e exercícios para melhorar as relações interpessoais.
-
-## Testes
-1. **Configurar Jest para testes unitários e de integração**.
-2. **Escrever testes para cada funcionalidade implementada**.
-3. **Garantir cobertura de testes mínima de 80%**.
-"""
-
-# Salvando o checklist em um arquivo .txt
-with open("/mnt/data/checklist_node_app.txt", "w") as file:
-    file.write(checklist)
-f
+Semana 9: Sistema de Pagamentos
+Implementação do sistema de assinatura para funcionalidades pagas.
+Integração com gateways de pagamento.
+Testes e ajustes no sistema de pagamento.
