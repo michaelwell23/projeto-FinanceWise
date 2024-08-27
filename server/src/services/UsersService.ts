@@ -41,4 +41,12 @@ export class UserServices {
 
     return user;
   }
+
+  public async getAllUser(): Promise<User[]> {
+    const userRepository = getCustomRepository(UserRepository);
+
+    const users = await userRepository.find();
+
+    return users;
+  }
 }

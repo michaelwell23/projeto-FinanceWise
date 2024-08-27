@@ -1,9 +1,16 @@
 import { Request, Response } from 'express';
 import { UserServices } from '../services/UsersService';
+import { userSchema } from '../validations/UserValidation';
+import * as Yup from 'yup';
 
 export class UserController {
   async create(request: Request, response: Response): Promise<Response> {
     const { name, email, password, cpf, phone } = request.body;
+
+    await userSchema.validate(
+      { name, email, password, cpf, phone },
+      { abortEarly: false }
+    );
 
     const userServices = new UserServices();
 
@@ -17,6 +24,23 @@ export class UserController {
       });
 
       return response.status(201).json(user);
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        return response.status(400).json({
+          errors: error.errors,
+        });
+      }
+
+      return response.status(400).json({ error: error.message });
+    }
+  }
+
+  async list(request: Request, response: Response): Promise<Response> {
+    const listUsersService = new UserServices();
+
+    try {
+      const users = await listUsersService.getAllUser();
+      return response.json(users);
     } catch (error) {
       return response.status(400).json({ error: error.message });
     }
