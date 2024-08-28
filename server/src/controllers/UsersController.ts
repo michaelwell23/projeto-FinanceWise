@@ -45,4 +45,22 @@ export class UserController {
       return response.status(400).json({ error: error.message });
     }
   }
+
+  async show(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+
+    const getUserService = new UserServices();
+
+    try {
+      const user = await getUserService.getUser(id);
+
+      if (!user) {
+        return response.status(404).json({ error: 'Usuário não encontrado' });
+      }
+
+      return response.json(user);
+    } catch (error) {
+      return response.status(400).json({ error: error.message });
+    }
+  }
 }

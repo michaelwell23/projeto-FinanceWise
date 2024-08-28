@@ -49,4 +49,12 @@ export class UserServices {
 
     return users;
   }
+
+  public async getUser(id: string): Promise<User | undefined> {
+    const userRepository = getCustomRepository(UserRepository);
+
+    const user = await userRepository.findOne(id);
+
+    return user;
+  }
 }
