@@ -11,6 +11,16 @@ interface IUserRequest {
   phone: string;
 }
 
+interface IUpdateUserRequest {
+  id: string;
+  name?: string;
+  email?: string;
+  cpf?: string;
+  phone?: string;
+  oldPassword?: string;
+  newPassword?: string;
+}
+
 export class UserServices {
   public async createUser({
     name,
@@ -54,6 +64,48 @@ export class UserServices {
     const userRepository = getCustomRepository(UserRepository);
 
     const user = await userRepository.findOne(id);
+
+    return user;
+  }
+
+  public async updateUser({
+    id,
+    name,
+    email,
+    cpf,
+    phone,
+    oldPassword,
+    newPassword,
+  }: IUpdateUserRequest): Promise<User> {
+    const userRepository = getCustomRepository(UserRepository);
+
+    const user = await userRepository.findOne(id);
+
+    if (!user) {
+      throw new Error('Usuário não encontrado');
+    }
+
+    if (oldPassword) {
+      const passwordMatch = await hash(oldPassword, user.password);
+
+      if (!passwordMatch) {
+        throw new Error('A senha antiga está incorreta');
+      }
+
+      if (!newPassword) {
+        throw new Error(
+          'Nova senha é obrigatória se a senha antiga for fornecida'
+        );
+      }
+
+      user.password = await hash(newPassword, 8);
+    }
+    user.name = name || user.name;
+    user.email = email || user.email;
+    user.cpf = cpf || user.cpf;
+    user.phone = phone || user.phone;
+
+    await userRepository.save(user);
 
     return user;
   }

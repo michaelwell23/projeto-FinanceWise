@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { UserServices } from '../services/UsersService';
-import { userSchema } from '../validations/UserValidation';
+import { userSchema, updateUserSchema } from '../validations/UserValidation';
 import * as Yup from 'yup';
 
 export class UserController {
@@ -60,6 +60,39 @@ export class UserController {
 
       return response.json(user);
     } catch (error) {
+      return response.status(400).json({ error: error.message });
+    }
+  }
+
+  async update(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+    const { name, email, cpf, phone, oldPassword, newPassword } = request.body;
+
+    try {
+      await updateUserSchema.validate(
+        { name, email, cpf, phone, oldPassword, newPassword },
+        { abortEarly: false }
+      );
+
+      const updateUserService = new UserServices();
+
+      const user = await updateUserService.updateUser({
+        id,
+        name,
+        email,
+        cpf,
+        phone,
+        oldPassword,
+        newPassword,
+      });
+
+      return response.json(user);
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        return response.status(400).json({
+          errors: error.errors,
+        });
+      }
       return response.status(400).json({ error: error.message });
     }
   }
