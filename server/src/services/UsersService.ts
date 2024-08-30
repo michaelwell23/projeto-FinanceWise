@@ -109,4 +109,16 @@ export class UserServices {
 
     return user;
   }
+
+  public async deleteUser(id: string): Promise<void> {
+    const userRepository = getCustomRepository(UserRepository);
+
+    const user = await userRepository.findOne(id);
+
+    if (!user) {
+      throw new Error('Usuário não encontrado');
+    }
+
+    await userRepository.remove(user);
+  }
 }
