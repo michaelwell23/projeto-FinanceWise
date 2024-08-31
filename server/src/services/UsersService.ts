@@ -1,8 +1,12 @@
+import path from 'path';
+import fs from 'fs';
+
 import { getCustomRepository } from 'typeorm';
 import { UserRepository } from '../repositories/UsersRepository';
 import { User } from '../entities/User';
 import { hash } from 'bcrypt';
 
+import uploadConfig from '../config/multer';
 interface IUserRequest {
   name: string;
   email: string;
@@ -19,6 +23,7 @@ interface IUpdateUserRequest {
   phone?: string;
   oldPassword?: string;
   newPassword?: string;
+  avatar?: string;
 }
 
 export class UserServices {
@@ -36,6 +41,10 @@ export class UserServices {
     }
 
     const userAlreadyExists = await userRepository.findOne({ email });
+
+    if (userAlreadyExists) {
+      throw new Error('User already exists');
+    }
 
     const hashadPassword = await hash(password, 10);
 
@@ -76,6 +85,7 @@ export class UserServices {
     phone,
     oldPassword,
     newPassword,
+    avatar,
   }: IUpdateUserRequest): Promise<User> {
     const userRepository = getCustomRepository(UserRepository);
 
@@ -100,6 +110,23 @@ export class UserServices {
 
       user.password = await hash(newPassword, 8);
     }
+
+    if (avatar) {
+      if (user.avatar) {
+        const userAvatarFilePath = path.join(
+          uploadConfig.directory,
+          user.avatar
+        );
+        const userAvatarFileExists = await fs.promises.stat(userAvatarFilePath);
+
+        if (userAvatarFileExists) {
+          await fs.promises.unlink(userAvatarFilePath);
+        }
+      }
+
+      user.avatar = avatar;
+    }
+
     user.name = name || user.name;
     user.email = email || user.email;
     user.cpf = cpf || user.cpf;

@@ -74,6 +74,8 @@ export class UserController {
         { abortEarly: false }
       );
 
+      const avatar = request.file ? request.file.filename : undefined;
+
       const updateUserService = new UserServices();
 
       const user = await updateUserService.updateUser({
@@ -84,9 +86,15 @@ export class UserController {
         phone,
         oldPassword,
         newPassword,
+        avatar,
       });
 
-      return response.json(user);
+      return response.json({
+        user,
+        avatar_url: `${request.protocol}://${request.get('host')}/files/${
+          user.avatar
+        }`,
+      });
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         return response.status(400).json({
