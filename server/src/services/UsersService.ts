@@ -13,6 +13,7 @@ interface IUserRequest {
   password: string;
   cpf: string;
   phone: string;
+  avatar?: string;
 }
 
 interface IUpdateUserRequest {
@@ -33,6 +34,7 @@ export class UserServices {
     password,
     cpf,
     phone,
+    avatar,
   }: IUserRequest): Promise<User> {
     const userRepository = getCustomRepository(UserRepository);
 
@@ -54,6 +56,7 @@ export class UserServices {
       password: hashadPassword,
       cpf,
       phone,
+      avatar,
     });
 
     await userRepository.save(user);
@@ -81,8 +84,8 @@ export class UserServices {
     id,
     name,
     email,
-    cpf,
     phone,
+    cpf,
     oldPassword,
     newPassword,
     avatar,
@@ -95,42 +98,37 @@ export class UserServices {
       throw new Error('Usuário não encontrado');
     }
 
-    if (oldPassword) {
-      const passwordMatch = await hash(oldPassword, user.password);
+    if (email && email !== user.email) {
+      const userWithUpdatedEmail = await userRepository.findOne({
+        where: { email },
+      });
 
-      if (!passwordMatch) {
-        throw new Error('A senha antiga está incorreta');
+      if (userWithUpdatedEmail) {
+        throw new Error('E-mail já está em uso.');
       }
 
-      if (!newPassword) {
-        throw new Error(
-          'Nova senha é obrigatória se a senha antiga for fornecida'
-        );
+      user.email = email;
+    }
+
+    if (oldPassword && newPassword) {
+      const checkOldPassword = await hash(oldPassword, 8);
+      if (checkOldPassword !== user.password) {
+        throw new Error('Senha antiga incorreta.');
       }
 
       user.password = await hash(newPassword, 8);
-    }
-
-    if (avatar) {
-      if (user.avatar) {
-        const userAvatarFilePath = path.join(
-          uploadConfig.directory,
-          user.avatar
-        );
-        const userAvatarFileExists = await fs.promises.stat(userAvatarFilePath);
-
-        if (userAvatarFileExists) {
-          await fs.promises.unlink(userAvatarFilePath);
-        }
-      }
-
-      user.avatar = avatar;
     }
 
     user.name = name || user.name;
     user.email = email || user.email;
     user.cpf = cpf || user.cpf;
     user.phone = phone || user.phone;
+
+    await userRepository.save(user);
+
+    if (avatar) {
+      user.avatar = avatar;
+    }
 
     await userRepository.save(user);
 

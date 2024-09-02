@@ -10,7 +10,7 @@ const upload = multer(multerConfig);
 
 const userController = new UserController();
 
-router.post('/users', userController.create);
+router.post('/users', upload.single('avatar'), userController.create);
 router.get('/users', userController.list);
 router.get('/users/:id', userController.show);
 router.put('/users/:id', upload.single('avatar'), userController.update);

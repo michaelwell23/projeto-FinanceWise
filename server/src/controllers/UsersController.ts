@@ -1,11 +1,13 @@
 import { Request, Response } from 'express';
 import { UserServices } from '../services/UsersService';
 import { userSchema, updateUserSchema } from '../validations/UserValidation';
+
 import * as Yup from 'yup';
 
 export class UserController {
   async create(request: Request, response: Response): Promise<Response> {
     const { name, email, password, cpf, phone } = request.body;
+    const avatar = request.file ? request.file.filename : undefined;
 
     await userSchema.validate(
       { name, email, password, cpf, phone },
@@ -23,7 +25,16 @@ export class UserController {
         phone,
       });
 
-      return response.status(201).json(user);
+      const avatar_url = avatar
+        ? `${request.protocol}://${request.get('host')}/uploads/${avatar}`
+        : null;
+
+      const userResponse = {
+        ...user,
+        avatar_url,
+      };
+
+      return response.status(201).json(userResponse);
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         return response.status(400).json({
@@ -40,7 +51,17 @@ export class UserController {
 
     try {
       const users = await listUsersService.getAllUser();
-      return response.json(users);
+
+      const usersWithAvatar = users.map((user) => ({
+        ...user,
+        avatar_url: user.avatar
+          ? `${request.protocol}://${request.get('host')}/uploads/${
+              user.avatar
+            }`
+          : null,
+      }));
+
+      return response.json(usersWithAvatar);
     } catch (error) {
       return response.status(400).json({ error: error.message });
     }
@@ -58,7 +79,16 @@ export class UserController {
         return response.status(404).json({ error: 'Usuário não encontrado' });
       }
 
-      return response.json(user);
+      const userResponse = {
+        ...user,
+        avatar_url: user.avatar
+          ? `${request.protocol}://${request.get('host')}/uploads/${
+              user.avatar
+            }`
+          : null,
+      };
+
+      return response.json(userResponse);
     } catch (error) {
       return response.status(400).json({ error: error.message });
     }
@@ -67,14 +97,14 @@ export class UserController {
   async update(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
     const { name, email, cpf, phone, oldPassword, newPassword } = request.body;
+    const avatar = request.file ? request.file.filename : undefined;
 
     try {
+      // Validar os dados de entrada
       await updateUserSchema.validate(
         { name, email, cpf, phone, oldPassword, newPassword },
         { abortEarly: false }
       );
-
-      const avatar = request.file ? request.file.filename : undefined;
 
       const updateUserService = new UserServices();
 
@@ -89,12 +119,16 @@ export class UserController {
         avatar,
       });
 
-      return response.json({
-        user,
-        avatar_url: `${request.protocol}://${request.get('host')}/files/${
-          user.avatar
-        }`,
-      });
+      const avatar_url = user.avatar
+        ? `${request.protocol}://${request.get('host')}/uploads/${user.avatar}`
+        : null;
+
+      const userResponse = {
+        ...user,
+        avatar_url,
+      };
+
+      return response.json(userResponse);
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         return response.status(400).json({
