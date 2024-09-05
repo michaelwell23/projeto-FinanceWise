@@ -8,7 +8,7 @@ export class UserDeleteServices {
     const user = await userRepository.findOne(id);
 
     if (!user) {
-      throw new Error('Usuário não encontrado');
+      throw new Error('User not found!');
     }
 
     await userRepository.remove(user);

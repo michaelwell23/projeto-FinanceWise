@@ -31,7 +31,7 @@ export class UserUpdateServices {
     const user = await userRepository.findOne(id);
 
     if (!user) {
-      throw new Error('Usuário não encontrado');
+      throw new Error('User not found');
     }
 
     if (email && email !== user.email) {
@@ -40,7 +40,7 @@ export class UserUpdateServices {
       });
 
       if (userWithUpdatedEmail) {
-        throw new Error('E-mail já está em uso.');
+        throw new Error('Email already is exists!.');
       }
 
       user.email = email;
@@ -49,7 +49,7 @@ export class UserUpdateServices {
     if (oldPassword && newPassword) {
       const checkOldPassword = await hash(oldPassword, 8);
       if (checkOldPassword !== user.password) {
-        throw new Error('Senha antiga incorreta.');
+        throw new Error('Password already exists!');
       }
 
       user.password = await hash(newPassword, 8);

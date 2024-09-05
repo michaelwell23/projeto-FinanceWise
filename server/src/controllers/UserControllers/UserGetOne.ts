@@ -14,13 +14,20 @@ export class UserGetOneController {
         return response.status(404).json({ error: 'Usuário não encontrado' });
       }
 
+      const { name, cpf, email, avatar, created_at, updated_at } = user;
+
+      const avaterUrl = avatar
+        ? `${request.protocol}://${request.get('host')}/uploads/${user.avatar}`
+        : null;
+
       const userResponse = {
-        ...user,
-        avatar_url: user.avatar
-          ? `${request.protocol}://${request.get('host')}/uploads/${
-              user.avatar
-            }`
-          : null,
+        id,
+        name,
+        cpf,
+        email,
+        avatar: avaterUrl,
+        created_at,
+        updated_at,
       };
 
       return response.json(userResponse);

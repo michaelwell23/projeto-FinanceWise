@@ -8,14 +8,21 @@ export class UserGetAllController {
     try {
       const users = await listUsersService.getAllUser();
 
-      const usersWithAvatar = users.map((user) => ({
-        ...user,
-        avatar_url: user.avatar
-          ? `${request.protocol}://${request.get('host')}/uploads/${
-              user.avatar
-            }`
-          : null,
-      }));
+      const usersWithAvatar = users.map((user) => {
+        const { id, name, cpf, email, avatar, created_at, updated_at } = user;
+
+        return {
+          id,
+          name,
+          cpf,
+          email,
+          avatar: avatar
+            ? `${request.protocol}://${request.get('host')}/uploads/${avatar}`
+            : null,
+          created_at,
+          updated_at,
+        };
+      });
 
       return response.json(usersWithAvatar);
     } catch (error) {
