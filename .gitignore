@@ -26,6 +26,9 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 
+.env
 
 analiseDeRequisitos.md
 checklist.txt
+case.txt
+

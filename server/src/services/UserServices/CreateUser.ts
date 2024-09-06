@@ -3,6 +3,7 @@ import { getCustomRepository } from 'typeorm';
 import { UserRepository } from '../../repositories/UsersRepository';
 import { User } from '../../entities/User';
 import { hash } from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 interface IUserRequest {
   name: string;
@@ -19,9 +20,10 @@ export class UserCreateServices {
     password,
     cpf,
     phone,
-  }: IUserRequest): Promise<User> {
+  }: IUserRequest): Promise<{ user: User; token: string }> {
     const userRepository = getCustomRepository(UserRepository);
 
+    // Validação de entrada de dados
     const schema = Yup.object().shape({
       name: Yup.string().required('Name is required'),
       email: Yup.string()
@@ -43,6 +45,7 @@ export class UserCreateServices {
       { abortEarly: false }
     );
 
+    // Verifica se o e-mail ou CPF já existe
     const userAlreadyExists = await userRepository.findOne({ email });
     if (userAlreadyExists) {
       throw new Error('User already exists');
@@ -53,18 +56,27 @@ export class UserCreateServices {
       throw new Error('User with this CPF already exists');
     }
 
-    const hashadPassword = await hash(password, 10);
-
+    // Criação do usuário com a senha criptografada
+    const hashedPassword = await hash(password, 10);
     const user = userRepository.create({
       name,
       email,
-      password: hashadPassword,
+      password: hashedPassword,
       cpf,
       phone,
     });
 
     await userRepository.save(user);
 
-    return user;
+    // Gera o token JWT
+    const token = jwt.sign(
+      { id: user.id },
+      process.env.JWT_SECRET || 'secret',
+      {
+        expiresIn: '1d',
+      }
+    );
+
+    return { user, token };
   }
 }

@@ -1,5 +1,4 @@
 import * as Yup from 'yup';
-import { classToPlain } from 'class-transformer';
 import { Request, Response } from 'express';
 import { UserCreateServices } from '../../services/UserServices/CreateUser';
 
@@ -11,7 +10,8 @@ export class UserCreateController {
     const userServices = new UserCreateServices();
 
     try {
-      const user = await userServices.createUser({
+      // Cria o usuário e retorna o token
+      const { user, token } = await userServices.createUser({
         name,
         email,
         password,
@@ -24,11 +24,12 @@ export class UserCreateController {
         : null;
 
       const userResponse = {
-        name,
-        email,
-        cpf,
-        phone,
+        name: user.name,
+        email: user.email,
+        cpf: user.cpf,
+        phone: user.phone,
         avatar: avatar_url,
+        token, // Retorna o token
       };
 
       return response.status(201).json(userResponse);
