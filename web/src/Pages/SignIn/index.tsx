@@ -1,69 +1,105 @@
-import React, { useState } from 'react';
+import React, { useRef, useCallback } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import * as Yup from 'yup';
 
-import { LoginContainer, LoginForm, LoginInput, LoginButton } from './styles';
+import { Form } from '@unform/web';
+import { FormHandles } from '@unform/core';
 
-const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
+import { FiLock, FiLogIn, FiMail } from 'react-icons/fi';
 
-  const handleLogin = async (event: React.FormEvent) => {
-    event.preventDefault();
+import { useAuth } from '../../hooks/auth';
+import { useToast } from '../../hooks/toast';
 
-    const payload = {
-      email,
-      password,
-    };
+import getValidationError from '../../utils/getValidationErrors';
 
-    try {
-      const response = await fetch('http://localhost:5000/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
+import Input from '../../components/Input';
+import Button from '../../components/Button';
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        setError(errorData.message || 'Erro ao realizar login');
-        return;
+import { Container, Content, Background, AnimationContainer } from './styles';
+
+interface SignInFormData {
+  identifier: string;
+  password: string;
+}
+
+const SignIn: React.FC = () => {
+  const formRef = useRef<FormHandles>(null);
+
+  const { signIn } = useAuth();
+  const { addToast } = useToast();
+  const history = useHistory();
+
+  const handleSubmit = useCallback(
+    async (data: SignInFormData) => {
+      try {
+        formRef.current?.setErrors({});
+
+        const schema = Yup.object().shape({
+          identifier: Yup.string().required(
+            'Identificador (e-mail ou CPF) obrigatório'
+          ),
+          password: Yup.string().required('Senha obrigatória'),
+        });
+
+        await schema.validate(data, { abortEarly: false });
+
+        await signIn({ identifier: data.identifier, password: data.password });
+
+        history.push('/dashboard');
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationError(err);
+          formRef.current?.setErrors(errors);
+          return;
+        }
+
+        addToast({
+          type: 'error',
+          title: 'Erro na autenticação',
+          description: 'Ocorreu um erro ao fazer login, cheque as credenciais.',
+        });
       }
-
-      const data = await response.json();
-      console.log('Login realizado com sucesso:', data);
-
-      // Armazenar token ou redirecionar
-      localStorage.setItem('token', data.token);
-      // redirecionar o usuário após login
-      window.location.href = '/dashboard';
-    } catch (error) {
-      console.error('Erro na requisição de login:', error);
-      setError('Erro ao realizar login. Tente novamente.');
-    }
-  };
+    },
+    [signIn, addToast, history]
+  );
 
   return (
-    <LoginContainer>
-      <h1>Login</h1>
-      <LoginForm onSubmit={handleLogin}>
-        <LoginInput
-          type='email'
-          placeholder='Email'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <LoginInput
-          type='password'
-          placeholder='Senha'
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <LoginButton type='submit'>Entrar</LoginButton>
-      </LoginForm>
-    </LoginContainer>
+    <Container>
+      <Content>
+        <AnimationContainer>
+          <img src='logo.png' alt='logo' />
+          <Form
+            ref={formRef}
+            onSubmit={handleSubmit}
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
+            <h1>Faça seu Login</h1>
+            <Input
+              name='identifier'
+              icon={FiMail}
+              type='text'
+              placeholder='E-mail ou CPF'
+            />
+            <Input
+              name='password'
+              icon={FiLock}
+              type='password'
+              placeholder='Senha'
+            />
+            <Button type='submit'>Entrar</Button>
+            <Link to='/forgot-password'>Esqueci minha senha</Link>
+          </Form>
+          <Link to='/signup'>
+            <FiLogIn />
+            Cadastrar conta
+          </Link>
+        </AnimationContainer>
+      </Content>
+      <Background />
+    </Container>
   );
 };
 
-export default Login;
+export default SignIn;
