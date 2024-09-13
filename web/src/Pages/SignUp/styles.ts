@@ -34,7 +34,8 @@ export const Content = styled.div`
 
 export const Background = styled.div`
   flex: 1;
-  background: url(${signUpBackground}) no-repeat center;
+  background: url('https://img.freepik.com/free-vector/woman-sitting-meditating-pile-books-student-study-learning-flat-vector-illustration-education-knowledge_74855-8686.jpg')
+    no-repeat center;
   background-size: cover;
   filter: grayscale(1);
 

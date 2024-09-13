@@ -5,13 +5,14 @@ import {
   FiCreditCard,
   FiMail,
   FiLock,
+  FiPhone,
 } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 
 import { FormHandles } from '@unform/core';
 import { Link, useHistory } from 'react-router-dom';
-import logo from '../../assets/logo.png';
+// import logo from '../../assets/logo.png';
 
 import api from '../../services/apiClient';
 
@@ -27,6 +28,7 @@ interface SignUpFormData {
   name: String;
   email: String;
   cpf: string;
+  phone: string;
   password: String;
 }
 
@@ -44,6 +46,7 @@ const SignUp: React.FC = () => {
         const schema = Yup.object().shape({
           fullName: Yup.string().required('Nome Completo obrigatório!'),
           cpf: Yup.string().required('CPF obrigatório!'),
+          phone: Yup.string().required('Telefone é obrigatório!'),
           email: Yup.string()
             .required('E-mail obrigatório!')
             .email('Digite email válido'),
@@ -88,14 +91,21 @@ const SignUp: React.FC = () => {
       <Background />
       <Content>
         <AnimationContainer>
-          <img src={logo} alt='+Clínica Saúde' />
+          {/* <img src={logo} alt='+Clínica Saúde' /> */}
 
-          <Form ref={formRef} onSubmit={handleSubmit}>
+          <Form
+            ref={formRef}
+            onSubmit={handleSubmit}
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+          >
             <h1>Cadastre-se</h1>
 
             <Input name='fullName' icon={FiUser} placeholder='Nome Completo' />
             <Input name='cpf' icon={FiCreditCard} placeholder='CPF' />
             <Input name='email' icon={FiMail} placeholder='E-mail' />
+            <Input name='prone' icon={FiPhone} placeholder='Telefone' />
             <Input
               name='password'
               icon={FiLock}
@@ -106,7 +116,7 @@ const SignUp: React.FC = () => {
             <Button type='submit'>Cadastrar</Button>
           </Form>
 
-          <Link to='/'>
+          <Link to='/signin'>
             <FiArrowLeft />
             Voltar para Login
           </Link>
