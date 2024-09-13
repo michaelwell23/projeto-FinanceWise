@@ -1,38 +1,91 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+import { shade } from 'polished';
 
-export const RegisterContainer = styled.div`
+import signUpBackground from '../../assets/sign-up-background.jpg';
+
+const appearFromRight = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(100px)
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0)
+  }
+`;
+
+export const Container = styled.div`
+  height: 100vh;
+
+  display: flex;
+  align-items: stretch;
+`;
+
+export const Content = styled.div`
+  place-content: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #f5f5f5;
+
+  width: 100%;
+  max-width: 700px;
 `;
 
-export const RegisterForm = styled.form`
+export const Background = styled.div`
+  flex: 1;
+  background: url(${signUpBackground}) no-repeat center;
+  background-size: cover;
+  filter: grayscale(1);
+
+  animation: ${appearFromRight} 1s;
+`;
+
+export const AnimationContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 300px;
-`;
+  align-items: center;
 
-export const RegisterInput = styled.input`
-  margin-bottom: 15px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-`;
+  animation: ${appearFromRight} 1.2s;
 
-export const RegisterButton = styled.button`
-  padding: 10px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
+  form {
+    margin: 40px 0;
+    width: 340px;
+    text-align: center;
 
-  &:hover {
-    background-color: #218838;
+    h1 {
+      margin-bottom: 24px;
+    }
+
+    > a {
+      color: #f4ede8;
+      display: block;
+      margin-top: 15px;
+      text-decoration: none;
+      transition: background-color 0.5s;
+
+      &:hover {
+        color: ${shade(0.2, '#f4ede8')};
+      }
+    }
+  }
+
+  > a {
+    display: flex;
+    align-items: center;
+
+    color: #94de5e;
+    display: block;
+    margin-top: 24px;
+    text-decoration: none;
+    transition: background-color 0.5s;
+
+    svg {
+      margin-right: 16px;
+    }
+
+    &:hover {
+      color: ${shade(0.2, '#94de5e')};
+    }
   }
 `;
