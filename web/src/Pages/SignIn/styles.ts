@@ -1,8 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { shade } from 'polished';
 
-import signInBackground from '../../assets/sign-in-background.jpg';
-
 const appearFromLeft = keyframes`
   from {
     opacity: 0;
@@ -17,27 +15,23 @@ const appearFromLeft = keyframes`
 
 export const Container = styled.div`
   height: 100vh;
-
   display: flex;
-  align-items: stretch;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const Content = styled.div`
-  place-content: center;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  flex-direction: column;
 
   width: 100%;
-  max-width: 700px;
-`;
-
-export const Background = styled.div`
-  flex: 1;
-  background: url(${signInBackground}) no-repeat center;
-  background-size: cover;
-  filter: grayscale(1);
-
+  max-width: 400px;
+  background: #282828;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px 4px rgba(0, 0, 0, 0.3);
   animation: ${appearFromLeft} 1s;
 `;
 
@@ -45,16 +39,17 @@ export const AnimationContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  animation: ${appearFromLeft} 1.2s;
+  width: 100%;
 
   form {
-    margin: 80px 0;
-    width: 340px;
+    margin: 40px 0;
+    width: 100%;
     text-align: center;
 
     h1 {
       margin-bottom: 24px;
+      font-size: 24px;
+      color: #f4ede8;
     }
 
     > a {
@@ -62,7 +57,7 @@ export const AnimationContainer = styled.div`
       display: block;
       margin-top: 24px;
       text-decoration: none;
-      transition: background-color 0.5s;
+      transition: color 0.5s;
 
       &:hover {
         color: ${shade(0.2, '#94de5e')};
@@ -73,12 +68,10 @@ export const AnimationContainer = styled.div`
   > a {
     display: flex;
     align-items: center;
-
     color: #94de5e;
-    display: block;
     margin-top: 24px;
     text-decoration: none;
-    transition: background-color 0.5s;
+    transition: color 0.5s;
 
     svg {
       margin-right: 16px;

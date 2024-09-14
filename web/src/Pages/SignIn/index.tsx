@@ -15,7 +15,7 @@ import getValidationError from '../../utils/getValidationErrors';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
-import { Container, Content, Background, AnimationContainer } from './styles';
+import { Container, Content, AnimationContainer } from './styles';
 
 interface SignInFormData {
   identifier: string;
@@ -97,7 +97,6 @@ const SignIn: React.FC = () => {
           </Link>
         </AnimationContainer>
       </Content>
-      <Background />
     </Container>
   );
 };
