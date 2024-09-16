@@ -31,8 +31,8 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
-    const token = localStorage.getItem('@+clinicaSaude:token');
-    const user = localStorage.getItem('@+clinicaSaude:user');
+    const token = localStorage.getItem('@mindForge:token');
+    const user = localStorage.getItem('@mindForge:user');
 
     if (token && user) {
       return { token, user: JSON.parse(user) };
@@ -43,15 +43,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const signIn = useCallback(
     async ({ identifier, password }: SignInCredentials) => {
-      const response = await api.post('sessions', {
-        identifier, // Pode ser CPF ou email
+      const response = await api.post('signin', {
+        identifier,
         password,
       });
 
       const { token, user } = response.data;
 
-      localStorage.setItem('@+clinicaSaude:token', token);
-      localStorage.setItem('@+clinicaSaude:user', JSON.stringify(user));
+      localStorage.setItem('@mindForge:token', token);
+      localStorage.setItem('@mindForge:user', JSON.stringify(user));
 
       setData({ token, user });
     },

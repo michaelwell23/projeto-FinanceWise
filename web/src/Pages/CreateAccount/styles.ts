@@ -1,8 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { shade } from 'polished';
 
-import signUpBackground from '../../assets/sign-up-background.jpg';
-
 const appearFromRight = keyframes`
   from {
     opacity: 0;
@@ -17,9 +15,9 @@ const appearFromRight = keyframes`
 
 export const Container = styled.div`
   height: 100vh;
-
   display: flex;
-  align-items: stretch;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const Content = styled.div`
@@ -27,19 +25,8 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   width: 100%;
   max-width: 700px;
-`;
-
-export const Background = styled.div`
-  flex: 1;
-  background: url('https://img.freepik.com/free-vector/woman-sitting-meditating-pile-books-student-study-learning-flat-vector-illustration-education-knowledge_74855-8686.jpg')
-    no-repeat center;
-  background-size: cover;
-  filter: grayscale(1);
-
-  animation: ${appearFromRight} 1s;
 `;
 
 export const AnimationContainer = styled.div`
@@ -48,14 +35,36 @@ export const AnimationContainer = styled.div`
   align-items: center;
 
   animation: ${appearFromRight} 1.2s;
+`;
+
+export const BoxContainer = styled.div`
+  background: #282828;
+  border-radius: 10px;
+  padding: 40px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px; /* Ajustei para ser um pouco maior */
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    width: 150px; /* Tamanho da logo */
+    margin-bottom: 15px; /* Espaço abaixo da logo */
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+  }
 
   form {
     margin: 40px 0;
-    width: 340px;
+    width: 100%;
     text-align: center;
 
     h1 {
       margin-bottom: 24px;
+      color: #f4ede8;
     }
 
     > a {
@@ -74,7 +83,7 @@ export const AnimationContainer = styled.div`
   > a {
     display: flex;
     align-items: center;
-
+    justify-content: center; /* Centralizando o link de "Voltar para login" */
     color: #94de5e;
     display: block;
     margin-top: 24px;

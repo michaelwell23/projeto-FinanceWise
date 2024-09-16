@@ -1,23 +1,27 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import AppProvider from './hooks';
+import { AuthProvider } from './contexts/Auth/AuthContext';
+import PrivateRoute from './Routes/AuthRoutes';
 import Login from './Pages/SignIn';
-import Register from './Pages/SignUp';
+import CreateAccount from './Pages/CreateAccount';
+import Dashboard from './Pages/Dashboard';
 
 import GlobalStyle from './styles/global';
 
 function App() {
   return (
     <Router>
-      <Switch>
-        <AppProvider>
+      <AuthProvider>
+        <Switch>
           <Route path='/signin' component={Login} />
-          <Route path='/signup' component={Register} />
-        </AppProvider>
-      </Switch>
+          <Route path='/create-account' component={CreateAccount} />
 
-      <GlobalStyle />
+          <PrivateRoute path='/dashboard' component={Dashboard} />
+        </Switch>
+
+        <GlobalStyle />
+      </AuthProvider>
     </Router>
   );
 }

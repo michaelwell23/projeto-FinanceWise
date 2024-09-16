@@ -12,7 +12,6 @@ import * as Yup from 'yup';
 
 import { FormHandles } from '@unform/core';
 import { Link, useHistory } from 'react-router-dom';
-// import logo from '../../assets/logo.png';
 
 import api from '../../services/apiClient';
 
@@ -22,14 +21,14 @@ import getValidationError from '../../utils/getValidationErrors';
 
 import { useToast } from '../../hooks/toast';
 
-import { Container, Content, Background, AnimationContainer } from './styles';
+import { Container, Content, AnimationContainer, BoxContainer } from './styles';
 
 interface SignUpFormData {
-  name: String;
-  email: String;
+  name: string;
+  email: string;
   cpf: string;
   phone: string;
-  password: String;
+  password: string;
 }
 
 const SignUp: React.FC = () => {
@@ -44,13 +43,13 @@ const SignUp: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          fullName: Yup.string().required('Nome Completo obrigatório!'),
-          cpf: Yup.string().required('CPF obrigatório!'),
-          phone: Yup.string().required('Telefone é obrigatório!'),
+          name: Yup.string().required('Nome Completo obrigatório!'),
           email: Yup.string()
             .required('E-mail obrigatório!')
             .email('Digite email válido'),
-          password: Yup.string().min(6, 'No mínimo 6 digitos'),
+          cpf: Yup.string().required('CPF obrigatório!'),
+          phone: Yup.string().required('Telefone é obrigatório!'),
+          password: Yup.string().min(6, 'No mínimo 6 dígitos'),
         });
 
         await schema.validate(data, {
@@ -59,11 +58,11 @@ const SignUp: React.FC = () => {
 
         await api.post('/users', data);
 
-        history.push('/');
+        history.push('/signin');
 
         addToast({
           type: 'success',
-          title: 'Cadastro realidado com sucesso!',
+          title: 'Cadastro realizado com sucesso!',
           description:
             'Utilize o seu email e senha para acesso, na página de login.',
         });
@@ -78,7 +77,7 @@ const SignUp: React.FC = () => {
 
         addToast({
           type: 'error',
-          title: 'Error ao realizar o seu cadastro',
+          title: 'Erro ao realizar cadastro',
           description: 'Verifique os campos e tente novamente',
         });
       }
@@ -88,38 +87,39 @@ const SignUp: React.FC = () => {
 
   return (
     <Container>
-      <Background />
       <Content>
         <AnimationContainer>
-          {/* <img src={logo} alt='+Clínica Saúde' /> */}
+          <BoxContainer>
+            <img src='logo.png' alt='Logo' />
 
-          <Form
-            ref={formRef}
-            onSubmit={handleSubmit}
-            placeholder={undefined}
-            onPointerEnterCapture={undefined}
-            onPointerLeaveCapture={undefined}
-          >
-            <h1>Cadastre-se</h1>
+            <Form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            >
+              <h1>Cadastre-se</h1>
 
-            <Input name='fullName' icon={FiUser} placeholder='Nome Completo' />
-            <Input name='cpf' icon={FiCreditCard} placeholder='CPF' />
-            <Input name='email' icon={FiMail} placeholder='E-mail' />
-            <Input name='prone' icon={FiPhone} placeholder='Telefone' />
-            <Input
-              name='password'
-              icon={FiLock}
-              type='password'
-              placeholder='Senha'
-            />
+              <Input name='name' icon={FiUser} placeholder='Nome Completo' />
+              <Input name='cpf' icon={FiCreditCard} placeholder='CPF' />
+              <Input name='email' icon={FiMail} placeholder='E-mail' />
+              <Input name='phone' icon={FiPhone} placeholder='Telefone' />
+              <Input
+                name='password'
+                icon={FiLock}
+                type='password'
+                placeholder='Senha'
+              />
 
-            <Button type='submit'>Cadastrar</Button>
-          </Form>
+              <Button type='submit'>Cadastrar</Button>
+            </Form>
 
-          <Link to='/signin'>
-            <FiArrowLeft />
-            Voltar para Login
-          </Link>
+            <Link to='/signin'>
+              <FiArrowLeft />
+              Voltar para Login
+            </Link>
+          </BoxContainer>
         </AnimationContainer>
       </Content>
     </Container>
