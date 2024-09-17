@@ -1,6 +1,7 @@
 import React, { useRef, useCallback } from 'react';
-import { Link, useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
+
+import { Link, useHistory } from 'react-router-dom';
 
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';

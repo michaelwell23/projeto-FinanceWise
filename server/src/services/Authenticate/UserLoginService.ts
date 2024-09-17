@@ -4,20 +4,20 @@ import jwt from 'jsonwebtoken';
 import { UserRepository } from '../../repositories/UsersRepository';
 
 interface IAuthenticateRequest {
-  emailOrCpf: string;
+  identifier: string;
   password: string;
 }
 
 export class AuthenticateUserService {
   public async authenticate({
-    emailOrCpf,
+    identifier,
     password,
   }: IAuthenticateRequest): Promise<{ token: string }> {
     const userRepository = getCustomRepository(UserRepository);
 
     // Verifica se é e-mail ou CPF e procura o usuário
     const user = await userRepository.findOne({
-      where: [{ email: emailOrCpf }, { cpf: emailOrCpf }],
+      where: [{ email: identifier }, { cpf: identifier }],
     });
 
     if (!user) {

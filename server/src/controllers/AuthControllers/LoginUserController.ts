@@ -3,13 +3,13 @@ import { AuthenticateUserService } from '../../services/Authenticate/UserLoginSe
 
 export class AuthenticateUserController {
   async userLoginAuth(request: Request, response: Response): Promise<Response> {
-    const { emailOrCpf, password } = request.body;
+    const { identifier, password } = request.body;
 
     const authenticateUserService = new AuthenticateUserService();
 
     try {
       const { token } = await authenticateUserService.authenticate({
-        emailOrCpf,
+        identifier,
         password,
       });
 
@@ -19,5 +19,22 @@ export class AuthenticateUserController {
         error: error.message || 'Unexpected error occurred',
       });
     }
+  }
+
+  async userLogoutAuth() {
+    localStorage.removeItem('token');
+
+    fetch('http://localhost:3000/logout', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+      .then(() => {
+        console.log('Logout realizado com sucesso.');
+      })
+      .catch((error) => {
+        console.error('Erro ao realizar logout:', error);
+      });
   }
 }

@@ -34,8 +34,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const token = localStorage.getItem('@mindForge:token');
     const user = localStorage.getItem('@mindForge:user');
 
-    if (token && user) {
-      return { token, user: JSON.parse(user) };
+    console.log(user);
+
+    try {
+      if (token && user) {
+        return { token, user: JSON.parse(user) };
+      }
+    } catch (error) {
+      console.error('Failed to parse user data:', error);
     }
 
     return {} as AuthState;
@@ -48,7 +54,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         password,
       });
 
+      console.log('API Response:', response.data);
+
       const { token, user } = response.data;
+
+      if (!user) {
+        console.error('User is undefined in API response');
+        return;
+      }
 
       localStorage.setItem('@mindForge:token', token);
       localStorage.setItem('@mindForge:user', JSON.stringify(user));
