@@ -50,13 +50,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const signIn = useCallback(
     async ({ identifier, password }: SignInCredentials) => {
       try {
-        console.log('Sending request to API with:', { identifier, password });
         const response = await api.post('signin', {
           identifier,
           password,
         });
-
-        console.log('API Response:', response);
 
         if (response.data) {
           const { token, user } = response.data;
