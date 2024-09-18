@@ -49,24 +49,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const signIn = useCallback(
     async ({ identifier, password }: SignInCredentials) => {
-      const response = await api.post('signin', {
-        identifier,
-        password,
-      });
+      try {
+        console.log('Sending request to API with:', { identifier, password });
+        const response = await api.post('signin', {
+          identifier,
+          password,
+        });
 
-      console.log('API Response:', response.data);
+        console.log('API Response:', response);
 
-      const { token, user } = response.data;
-
-      if (!user) {
-        console.error('User is undefined in API response');
-        return;
+        if (response.data) {
+          const { token, user } = response.data;
+          localStorage.setItem('@mindForge:token', token);
+          localStorage.setItem('@mindForge:user', JSON.stringify(user));
+          setData({ token, user });
+        } else {
+          console.error('No data in API response');
+        }
+      } catch (error) {
+        console.error('Error during sign in:', error);
       }
-
-      localStorage.setItem('@mindForge:token', token);
-      localStorage.setItem('@mindForge:user', JSON.stringify(user));
-
-      setData({ token, user });
     },
     []
   );

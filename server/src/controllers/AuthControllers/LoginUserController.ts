@@ -8,12 +8,12 @@ export class AuthenticateUserController {
     const authenticateUserService = new AuthenticateUserService();
 
     try {
-      const { token } = await authenticateUserService.authenticate({
+      const { token, user } = await authenticateUserService.authenticate({
         identifier,
         password,
       });
 
-      return response.status(200).json({ token });
+      return response.status(200).json({ token, user });
     } catch (error) {
       return response.status(400).json({
         error: error.message || 'Unexpected error occurred',

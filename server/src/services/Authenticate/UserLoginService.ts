@@ -2,6 +2,7 @@ import { getCustomRepository } from 'typeorm';
 import { compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { UserRepository } from '../../repositories/UsersRepository';
+import { User } from '../../entities/User';
 
 interface IAuthenticateRequest {
   identifier: string;
@@ -12,10 +13,9 @@ export class AuthenticateUserService {
   public async authenticate({
     identifier,
     password,
-  }: IAuthenticateRequest): Promise<{ token: string }> {
+  }: IAuthenticateRequest): Promise<{ token: string; user: User }> {
     const userRepository = getCustomRepository(UserRepository);
 
-    // Verifica se é e-mail ou CPF e procura o usuário
     const user = await userRepository.findOne({
       where: [{ email: identifier }, { cpf: identifier }],
     });
@@ -24,14 +24,12 @@ export class AuthenticateUserService {
       throw new Error('Incorrect email/CPF or password');
     }
 
-    // Verifica se a senha é correta
     const passwordMatch = await compare(password, user.password);
 
     if (!passwordMatch) {
       throw new Error('Incorrect email/CPF or password');
     }
 
-    // Gera o token JWT
     const token = jwt.sign(
       { id: user.id },
       process.env.JWT_SECRET || 'secret',
@@ -40,6 +38,6 @@ export class AuthenticateUserService {
       }
     );
 
-    return { token };
+    return { token, user }; // Inclua o usuário no retorno
   }
 }
