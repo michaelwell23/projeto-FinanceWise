@@ -21,20 +21,7 @@ export class AuthenticateUserController {
     }
   }
 
-  async userLogoutAuth() {
-    localStorage.removeItem('token');
-
-    fetch('http://localhost:3000/logout', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    })
-      .then(() => {
-        console.log('Logout realizado com sucesso.');
-      })
-      .catch((error) => {
-        console.error('Erro ao realizar logout:', error);
-      });
+  async logout(request: Request, response: Response): Promise<Response> {
+    return response.status(200).json({ message: 'Logout successful' });
   }
 }
