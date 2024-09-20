@@ -7,6 +7,5 @@ const routerAuth = Router();
 const authenticateUserController = new AuthenticateUserController();
 
 routerAuth.post('/signin', authenticateUserController.userLoginAuth);
-routerAuth.post('/logout', authenticateUserController.logout);
 
 export default routerAuth;

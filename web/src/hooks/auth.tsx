@@ -1,16 +1,28 @@
-import React, { createContext, useCallback, useState, ReactNode } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useState,
+  useContext,
+  ReactNode,
+} from 'react';
 import api from '../services/apiClient';
-
 interface User {
   id: string;
   name: string;
   email: string;
   cpf?: string;
+  phone: string;
 }
 
+interface SignInCredentials {
+  identifier: string;
+  password: string;
+}
 interface AuthContextData {
-  signIn(credentials: SignInCredentials): Promise<void>;
   user: User;
+  signIn(credentials: SignInCredentials): Promise<void>;
+  signOut(): void;
+  updateUser(user: User): void;
 }
 
 interface AuthState {
@@ -18,30 +30,21 @@ interface AuthState {
   user: User;
 }
 
-interface SignInCredentials {
-  identifier: string;
-  password: string;
-}
-
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-const AuthContext = createContext<AuthContextData>({} as AuthContextData);
+const AuthContext = createContext({} as AuthContextData);
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
     const token = localStorage.getItem('@mindForge:token');
     const user = localStorage.getItem('@mindForge:user');
 
-    console.log(user);
+    if (token && user) {
+      api.defaults.headers.authorization = `Bearer ${token}`;
 
-    try {
-      if (token && user) {
-        return { token, user: JSON.parse(user) };
-      }
-    } catch (error) {
-      console.error('Failed to parse user data:', error);
+      return { token, user: JSON.parse(user) };
     }
 
     return {} as AuthState;
@@ -49,36 +52,53 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const signIn = useCallback(
     async ({ identifier, password }: SignInCredentials) => {
-      try {
-        const response = await api.post('signin', {
-          identifier,
-          password,
-        });
+      const response = await api.post('signin', {
+        identifier,
+        password,
+      });
 
-        if (response.data) {
-          const { token, user } = response.data;
-          localStorage.setItem('@mindForge:token', token);
-          localStorage.setItem('@mindForge:user', JSON.stringify(user));
-          setData({ token, user });
-        } else {
-          console.error('No data in API response');
-        }
-      } catch (error) {
-        console.error('Error during sign in:', error);
-      }
+      const { token, user } = response.data;
+
+      localStorage.setItem('@mindForge:token', token);
+      localStorage.setItem('@mindForge:user', JSON.stringify(user));
+
+      api.defaults.headers.authorization = `Bearer ${token}`;
+
+      setData({ token, user });
     },
     []
   );
 
+  const signOut = useCallback(() => {
+    localStorage.removeItem('@mindForge:token');
+    localStorage.removeItem('@mindForge:user');
+
+    setData({} as AuthState);
+  }, []);
+
+  const updateUser = useCallback(
+    (user: User) => {
+      localStorage.setItem('@mindForge:user', JSON.stringify(user));
+
+      setData({
+        token: data.token,
+        user,
+      });
+    },
+    [setData, data.token]
+  );
+
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn }}>
+    <AuthContext.Provider
+      value={{ user: data.user, signIn, signOut, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
 export function useAuth(): AuthContextData {
-  const context = React.useContext(AuthContext);
+  const context = useContext(AuthContext);
 
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');

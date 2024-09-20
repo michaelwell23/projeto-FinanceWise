@@ -1,8 +1,8 @@
 import React from 'react';
-import api from '../../services/apiClient';
 
 import { FaSignOutAlt, FaBell } from 'react-icons/fa';
-import { useHistory } from 'react-router-dom';
+import { useAuth } from '../../hooks/auth';
+
 import {
   SiteWrap,
   SiteNav,
@@ -16,32 +16,7 @@ import {
 } from './styles';
 
 function App() {
-  const history = useHistory();
-
-  const handleLogout = async () => {
-    const confirmLogout = window.confirm('Você realmente deseja sair?');
-
-    if (confirmLogout) {
-      try {
-        await api.post(
-          '/logout',
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-          }
-        );
-
-        localStorage.removeItem('token');
-
-        history.push('/signin');
-      } catch (error) {
-        console.error('Erro ao fazer logout:', error);
-        alert('Erro ao fazer logout. Tente novamente.');
-      }
-    }
-  };
+  const { signOut } = useAuth();
 
   return (
     <SiteWrap>
@@ -51,10 +26,7 @@ function App() {
           <IconWrapper>
             <FaBell />
 
-            <FaSignOutAlt
-              onClick={handleLogout}
-              style={{ cursor: 'pointer' }}
-            />
+            <FaSignOutAlt onClick={signOut} style={{ cursor: 'pointer' }} />
           </IconWrapper>
         </Name>
 
