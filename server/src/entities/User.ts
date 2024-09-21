@@ -4,9 +4,11 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
-
 import { Exclude } from 'class-transformer';
+
+import { Commitment } from './Commitment';
 
 @Entity('users')
 export class User {
@@ -31,6 +33,9 @@ export class User {
 
   @Column({ nullable: true })
   avatar: string;
+
+  @OneToMany(() => Commitment, (commitment) => commitment.user)
+  commitments: Commitment[];
 
   @CreateDateColumn()
   created_at: Date;

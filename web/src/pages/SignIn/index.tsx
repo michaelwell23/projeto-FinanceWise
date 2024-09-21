@@ -92,7 +92,7 @@ const SignIn: React.FC = () => {
             <Button type='submit'>Entrar</Button>
             <Link to='/forgot-password'>Esqueci minha senha</Link>
           </Form>
-          <Link to='/create-account'>
+          <Link to='/signup'>
             <FiLogIn />
             Cadastrar conta
           </Link>
