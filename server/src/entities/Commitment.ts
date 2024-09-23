@@ -1,5 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { User } from './User';
+import { Task } from './Task';
 
 @Entity('commitments')
 export class Commitment {
@@ -17,4 +24,7 @@ export class Commitment {
 
   @ManyToOne(() => User, (user) => user.commitments)
   user: User;
+
+  @OneToMany(() => Task, (task) => task.commitment)
+  tasks: Task[];
 }

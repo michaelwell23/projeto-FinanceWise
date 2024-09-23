@@ -9,6 +9,7 @@ import {
 import { Exclude } from 'class-transformer';
 
 import { Commitment } from './Commitment';
+import { Task } from './Task';
 
 @Entity('users')
 export class User {
@@ -36,6 +37,9 @@ export class User {
 
   @OneToMany(() => Commitment, (commitment) => commitment.user)
   commitments: Commitment[];
+
+  @OneToMany(() => Task, (task) => task.user)
+  tasks: Task[];
 
   @CreateDateColumn()
   created_at: Date;

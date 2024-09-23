@@ -1,7 +1,7 @@
 import multer from 'multer';
 import { Router } from 'express';
 
-import { ensureAuthenticated } from '../middleware/auth';
+import authMiddleware from '../middleware/auth';
 import { UserCreateController } from '../controllers/UserControllers/UserCreate';
 import { UserDeleteController } from '../controllers/UserControllers/UserDelete';
 import { UserGetAllController } from '../controllers/UserControllers/UserGetAll';
@@ -21,7 +21,7 @@ const userDeleteController = new UserDeleteController();
 
 userRouter.post('/users', userCreateController.create);
 
-userRouter.use(ensureAuthenticated);
+userRouter.use(authMiddleware);
 
 userRouter.get('/users', userGetAllController.list);
 userRouter.get('/users/:id', userGetOneController.show);
