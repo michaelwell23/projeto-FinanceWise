@@ -8,9 +8,6 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
-import { Commitment } from './Commitment';
-import { Task } from './Task';
-
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -34,12 +31,6 @@ export class User {
 
   @Column({ nullable: true })
   avatar: string;
-
-  @OneToMany(() => Commitment, (commitment) => commitment.user)
-  commitments: Commitment[];
-
-  @OneToMany(() => Task, (task) => task.user)
-  tasks: Task[];
 
   @CreateDateColumn()
   created_at: Date;

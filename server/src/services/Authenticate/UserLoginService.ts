@@ -38,6 +38,6 @@ export class AuthenticateUserService {
       }
     );
 
-    return { token, user }; // Inclua o usuário no retorno
+    return { user, token };
   }
 }
