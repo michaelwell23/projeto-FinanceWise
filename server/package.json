@@ -7,7 +7,8 @@
     "dev": "tsnd --transpile-only --ignore-watch node_modules --respawn src/server.ts",
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js",
     "typeorm:run": "yarn typeorm migration:run",
-    "typeorm:rollback": "yarn typeorm migration:revert"
+    "typeorm:rollback": "yarn typeorm migration:revert",
+    "test": "jest"
   },
   "dependencies": {
     "@types/nodemailer": "^6.4.15",
@@ -31,10 +32,16 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.13",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/multer": "^1.4.11",
     "@types/node": "^22.1.0",
+    "@types/supertest": "^6.0.2",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   }
