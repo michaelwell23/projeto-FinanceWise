@@ -17,10 +17,16 @@ export default async function authMiddleware(
   const [, token] = authHeader.split(' ');
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const secretKey = process.env.JWT_SECRET;
 
-    if (typeof decoded === 'object' && 'id' in decoded) {
-      const { id } = decoded as JwtPayload;
+    if (!secretKey) {
+      throw new Error('JWT secret is undefined');
+    }
+
+    const decoded = jwt.verify(token, secretKey) as JwtPayload;
+
+    if (decoded && typeof decoded === 'object' && 'id' in decoded) {
+      const { id } = decoded;
 
       const userRepository = getCustomRepository(UserRepository);
       const user = await userRepository.findOne(id);

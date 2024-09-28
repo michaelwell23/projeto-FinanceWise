@@ -10,7 +10,6 @@ export class UserCreateController {
     const userServices = new UserCreateServices();
 
     try {
-      // Cria o usuário e retorna o token
       const { user, token } = await userServices.createUser({
         name,
         email,
@@ -40,8 +39,14 @@ export class UserCreateController {
         });
       }
 
-      return response.status(400).json({
-        error: error.message || 'Unexpected error occurred',
+      if (error instanceof Error) {
+        return response.status(400).json({
+          error: error.message || 'Unexpected error occurred',
+        });
+      }
+
+      return response.status(500).json({
+        error: 'Unexpected error occurred',
       });
     }
   }

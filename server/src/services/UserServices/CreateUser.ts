@@ -56,7 +56,6 @@ export class UserCreateServices {
       throw new Error('User with this CPF already exists');
     }
 
-    // Criação do usuário com a senha criptografada
     const hashedPassword = await hash(password, 10);
     const user = userRepository.create({
       name,
@@ -68,7 +67,6 @@ export class UserCreateServices {
 
     await userRepository.save(user);
 
-    // Gera o token JWT
     const token = jwt.sign(
       { id: user.id },
       process.env.JWT_SECRET || 'secret',

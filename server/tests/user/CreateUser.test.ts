@@ -5,12 +5,13 @@ import { createConnection } from 'typeorm';
 
 // Configuração para rodar os testes
 beforeAll(async () => {
-  await createConnection(); // Cria a conexão com o banco de dados para os testes
+  await createConnection();
+  await getConnection().runMigrations(); // Executa as migrações
 });
 
-afterAll(async () => {
+afterEach(async () => {
   const connection = getConnection();
-  await connection.close(); // Fecha a conexão com o banco de dados ao final dos testes
+  await connection.query(`DELETE FROM users`); // Limpa a tabela de usuários
 });
 
 describe('User Creation', () => {

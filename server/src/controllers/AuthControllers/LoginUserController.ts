@@ -16,7 +16,7 @@ export class AuthenticateUserController {
       return response.status(200).json({ token, user });
     } catch (error) {
       return response.status(400).json({
-        error: error.message || 'Unexpected error occurred',
+        error: 'An error occurred during authentication', // Mensagem padrão
       });
     }
   }

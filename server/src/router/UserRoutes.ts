@@ -2,6 +2,7 @@ import multer from 'multer';
 import { Router } from 'express';
 
 import authMiddleware from '../middleware/auth';
+
 import { UserCreateController } from '../controllers/UserControllers/UserCreate';
 import { UserDeleteController } from '../controllers/UserControllers/UserDelete';
 import { UserGetAllController } from '../controllers/UserControllers/UserGetAll';

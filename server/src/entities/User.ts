@@ -4,37 +4,34 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
 } from 'typeorm';
-import { Exclude } from 'class-transformer';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column()
-  name: string;
-
-  @Column({ unique: true })
-  email: string;
+  name!: string;
 
   @Column()
-  @Exclude()
-  password: string;
-
-  @Column({ unique: true })
-  cpf: string;
+  email!: string;
 
   @Column()
-  phone: string;
+  password!: string;
+
+  @Column()
+  cpf!: string;
+
+  @Column()
+  phone!: string;
 
   @Column({ nullable: true })
-  avatar: string;
+  avatar?: string;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at!: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updated_at!: Date;
 }

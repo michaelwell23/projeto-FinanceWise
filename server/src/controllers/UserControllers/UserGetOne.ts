@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { UserGetOne } from '../../services/UserServices/GetOneUser';
+import * as Yup from 'yup';
 
 export class UserGetOneController {
   async show(request: Request, response: Response): Promise<Response> {
@@ -7,7 +8,15 @@ export class UserGetOneController {
 
     const getUserService = new UserGetOne();
 
+    // Validação do ID
+    const schema = Yup.object().shape({
+      id: Yup.string().uuid('Invalid ID format').required('ID is required'),
+    });
+
     try {
+      // Valida o ID antes de buscar o usuário
+      await schema.validate({ id }, { abortEarly: false });
+
       const user = await getUserService.getOneUser(id);
 
       if (!user) {
@@ -16,7 +25,7 @@ export class UserGetOneController {
 
       const { name, cpf, email, avatar, created_at, updated_at } = user;
 
-      const avaterUrl = avatar
+      const avatarUrl = avatar
         ? `${request.protocol}://${request.get('host')}/uploads/${user.avatar}`
         : null;
 
@@ -25,14 +34,24 @@ export class UserGetOneController {
         name,
         cpf,
         email,
-        avatar: avaterUrl,
+        avatar: avatarUrl,
         created_at,
         updated_at,
       };
 
-      return response.json(userResponse);
+      return response.status(200).json(userResponse);
     } catch (error) {
-      return response.status(400).json({ error: error.message });
+      if (error instanceof Yup.ValidationError) {
+        return response.status(400).json({
+          errors: error.errors,
+        });
+      }
+
+      if (error instanceof Error) {
+        return response.status(400).json({ error: error.message });
+      }
+
+      return response.status(500).json({ error: 'Unexpected error occurred' });
     }
   }
 }

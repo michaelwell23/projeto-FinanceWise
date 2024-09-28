@@ -8,6 +8,10 @@ export class UserGetAllController {
     try {
       const users = await listUsersService.getAllUser();
 
+      if (users.length === 0) {
+        return response.status(404).json({ message: 'No users found' });
+      }
+
       const usersWithAvatar = users.map((user) => {
         const { id, name, cpf, email, avatar, created_at, updated_at } = user;
 
@@ -24,9 +28,13 @@ export class UserGetAllController {
         };
       });
 
-      return response.json(usersWithAvatar);
+      return response.status(200).json(usersWithAvatar);
     } catch (error) {
-      return response.status(400).json({ error: error.message });
+      if (error instanceof Error) {
+        return response.status(400).json({ error: error.message });
+      }
+
+      return response.status(500).json({ error: 'Unexpected error occurred' });
     }
   }
 }
