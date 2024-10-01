@@ -4,7 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+
+import { Emotion } from './Emotion';
 
 @Entity('users')
 export class User {
@@ -28,6 +31,9 @@ export class User {
 
   @Column({ nullable: true })
   avatar?: string;
+
+  @OneToMany(() => Emotion, (emotion) => emotion.user) // Define o relacionamento
+  emotions: Emotion[] | undefined;
 
   @CreateDateColumn()
   created_at!: Date;

@@ -8,13 +8,11 @@ export class UserGetOneController {
 
     const getUserService = new UserGetOne();
 
-    // Validação do ID
     const schema = Yup.object().shape({
       id: Yup.string().uuid('Invalid ID format').required('ID is required'),
     });
 
     try {
-      // Valida o ID antes de buscar o usuário
       await schema.validate({ id }, { abortEarly: false });
 
       const user = await getUserService.getOneUser(id);
