@@ -8,13 +8,14 @@ export class CreateEmotionsTable1727779548509 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'int',
+            type: 'uuid',
             isPrimary: true,
             isGenerated: true,
+            generationStrategy: 'uuid',
           },
           {
             name: 'userId',
-            type: 'int',
+            type: 'uuid',
           },
           {
             name: 'emotion',
@@ -24,6 +25,16 @@ export class CreateEmotionsTable1727779548509 implements MigrationInterface {
             name: 'createdAt',
             type: 'timestamp',
             default: 'CURRENT_TIMESTAMP',
+          },
+          {
+            name: 'created_at',
+            type: 'timestamp',
+            default: 'now()',
+          },
+          {
+            name: 'updated_at',
+            type: 'timestamp',
+            default: 'now()',
           },
         ],
         foreignKeys: [

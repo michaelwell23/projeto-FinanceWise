@@ -32,7 +32,7 @@ export class User {
   @Column({ nullable: true })
   avatar?: string;
 
-  @OneToMany(() => Emotion, (emotion) => emotion.user) // Define o relacionamento
+  @OneToMany(() => Emotion, (emotion) => emotion.user)
   emotions: Emotion[] | undefined;
 
   @CreateDateColumn()

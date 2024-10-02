@@ -4,24 +4,29 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  UpdateDateColumn,
+  CreateDateColumn,
 } from 'typeorm';
-import { User } from './User'; // Importa a entidade User
+import { User } from './User';
 
 @Entity('emotions')
 export class Emotion {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
   @Column()
-  userId: number;
+  userId!: string;
 
   @ManyToOne(() => User, (user) => user.emotions)
   @JoinColumn({ name: 'userId' })
-  user: User;
+  user!: User;
 
   @Column()
-  emotion: string; // O estado emocional (ex: 'feliz', 'triste')
+  emotion!: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date; // Data e hora do registro
+  @CreateDateColumn()
+  created_at!: Date;
+
+  @UpdateDateColumn()
+  updated_at!: Date;
 }
