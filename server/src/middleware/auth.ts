@@ -4,14 +4,14 @@ import { getCustomRepository } from 'typeorm';
 import { UserRepository } from '../repositories/UsersRepository';
 
 export default async function authMiddleware(
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction
 ) {
-  const authHeader = req.headers.authorization;
+  const authHeader = request.headers.authorization;
 
   if (!authHeader) {
-    return res.status(401).json({ error: 'Token não fornecido' });
+    return response.status(401).json({ error: 'Token não fornecido' });
   }
 
   const [, token] = authHeader.split(' ');
@@ -23,26 +23,25 @@ export default async function authMiddleware(
       throw new Error('JWT secret is undefined');
     }
 
-    const decoded = jwt.verify(token, secretKey) as JwtPayload;
+    const decoded = jwt.verify(token, secretKey);
 
-    if (decoded && typeof decoded === 'object' && 'id' in decoded) {
-      const { id } = decoded;
+    if (typeof decoded === 'object' && decoded !== null && 'id' in decoded) {
+      const { id } = decoded as JwtPayload;
 
       const userRepository = getCustomRepository(UserRepository);
       const user = await userRepository.findOne(id);
 
       if (!user) {
-        return res.status(401).json({ error: 'Usuário não encontrado' });
+        return response.status(401).json({ error: 'Usuário não encontrado' });
       }
 
-      // Define o user na requisição
-      req.user = user;
+      request.user = { id };
 
       return next();
     } else {
-      return res.status(401).json({ error: 'Token inválido' });
+      return response.status(401).json({ error: 'Token inválido' });
     }
   } catch (err) {
-    return res.status(401).json({ error: 'Token inválido' });
+    return response.status(401).json({ error: 'Token inválido' });
   }
 }

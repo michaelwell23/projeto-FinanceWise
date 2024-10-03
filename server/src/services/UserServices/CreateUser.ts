@@ -45,7 +45,6 @@ export class UserCreateServices {
       { abortEarly: false }
     );
 
-    // Verifica se o e-mail ou CPF já existe
     const userAlreadyExists = await userRepository.findOne({ email });
     if (userAlreadyExists) {
       throw new Error('User already exists');
