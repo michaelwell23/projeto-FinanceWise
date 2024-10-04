@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
-import EmotionService from '../services/emotionService';
+import { EmotionCreateService } from '../../services/EmotionServices/CreateEmotionServices';
 
-class EmotionController {
+export class EmotionCreateController {
   public async create(request: Request, response: Response): Promise<Response> {
     try {
+      const emotionCreateService = new EmotionCreateService();
+
       const userId = request.user?.id;
 
       if (!userId) {
@@ -18,7 +20,10 @@ class EmotionController {
         return response.status(400).json({ message: 'Emoção não fornecida' });
       }
 
-      const newEmotion = await EmotionService.createEmotion(userId, emotion);
+      const newEmotion = await emotionCreateService.createEmotion(
+        userId,
+        emotion
+      );
 
       return response
         .status(201)
@@ -28,5 +33,3 @@ class EmotionController {
     }
   }
 }
-
-export default new EmotionController();
