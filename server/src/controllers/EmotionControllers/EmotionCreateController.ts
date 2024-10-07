@@ -3,33 +3,25 @@ import { EmotionCreateService } from '../../services/EmotionServices/CreateEmoti
 
 export class EmotionCreateController {
   public async create(request: Request, response: Response): Promise<Response> {
+    const emotionCreateService = new EmotionCreateService();
+
     try {
-      const emotionCreateService = new EmotionCreateService();
-
-      const userId = request.user?.id;
-
-      if (!userId) {
-        return response
-          .status(400)
-          .json({ message: 'Usuário não autenticado' });
-      }
-
+      const userId = request.user.id;
       const { emotion } = request.body;
 
-      if (!emotion) {
-        return response.status(400).json({ message: 'Emoção não fornecida' });
+      if (!userId || !emotion) {
+        return response
+          .status(400)
+          .json({ message: 'ID de usuário e emoção são obrigatórios' });
       }
 
-      const newEmotion = await emotionCreateService.createEmotion(
-        userId,
-        emotion
-      );
+      const result = await emotionCreateService.createEmotion(userId, emotion);
 
-      return response
-        .status(201)
-        .json({ message: 'Emoção criada com sucesso', emotion: newEmotion });
+      return response.status(201).json(result);
     } catch (error) {
-      return response.status(500).json({ message: 'Erro ao criar emoção' });
+      return response
+        .status(500)
+        .json({ message: 'Erro ao criar emoção', error: error.message });
     }
   }
 }

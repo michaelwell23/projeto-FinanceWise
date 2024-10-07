@@ -1,24 +1,34 @@
 import { getCustomRepository } from 'typeorm';
 import { EmotionRepository } from '../../repositories/EmotionRepository';
+
 import { Emotion } from '../../entities/Emotion';
 
-interface IEmotion {
-  userId: string;
-  emotion: string;
-}
+import { UserRepository } from '../../repositories/UsersRepository';
 
 export class EmotionCreateService {
-  public async createEmotion({ userId, emotion }: IEmotion): Promise<Emotion> {
+  public async createEmotion(userId: string, emotion: string) {
     const emotionRepository = getCustomRepository(EmotionRepository);
+    const userRepository = getCustomRepository(UserRepository);
 
     if (!userId || !emotion) {
       throw new Error('ID de usuário e emoção são obrigatórios');
     }
 
-    const newEmotion = new Emotion();
-    newEmotion.userId = userId;
-    newEmotion.emotion = emotion;
+    const user = await userRepository.findOne(userId);
 
-    return await emotionRepository.save(newEmotion);
+    if (!user) {
+      throw new Error('Usuário não encontrado');
+    }
+
+    const newEmotion = emotionRepository.create({
+      userId: user.id,
+      emotion,
+    });
+
+    await emotionRepository.save(newEmotion);
+
+    return {
+      emotion: newEmotion,
+    };
   }
 }

@@ -3,12 +3,14 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  OneToMany,
   JoinColumn,
   UpdateDateColumn,
   CreateDateColumn,
 } from 'typeorm';
-import { User } from './User';
 
+import { User } from './User';
+import { Suggestion } from './Suggestion';
 @Entity('emotions')
 export class Emotion {
   @PrimaryGeneratedColumn('uuid')
@@ -20,6 +22,9 @@ export class Emotion {
   @ManyToOne(() => User, (user) => user.emotions)
   @JoinColumn({ name: 'userId' })
   user!: User;
+
+  @OneToMany(() => Suggestion, (suggestion) => suggestion.emotion)
+  suggestions!: Suggestion[];
 
   @Column()
   emotion!: string;

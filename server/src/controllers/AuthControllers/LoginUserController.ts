@@ -13,10 +13,10 @@ export class AuthenticateUserController {
         password,
       });
 
-      return response.status(200).json({ token, user });
+      return response.status(200).json({ user, token });
     } catch (error) {
       return response.status(400).json({
-        error: 'An error occurred during authentication', // Mensagem padrão
+        error: 'An error occurred during authentication',
       });
     }
   }
