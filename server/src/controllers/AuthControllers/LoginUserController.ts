@@ -15,7 +15,7 @@ export class AuthenticateUserController {
 
       return response.status(200).json({ user, token });
     } catch (error) {
-      return response.status(400).json({
+      return response.status(400).json({iando
         error: 'An error occurred during authentication',
       });
     }
