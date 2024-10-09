@@ -1,19 +1,22 @@
 import { Request, Response } from 'express';
-import SuggestionCreateService from '../../services/SuggestionService/CreateSuggestionServices';
-import EmotionService from '../../services/EmotionServices/GetByIdEmotionServices';
+import { SuggestionCreateService } from '../../services/SuggestionService/CreateSuggestionServices';
+import { GetByIdEmotionsServices } from '../../services/EmotionServices/GetByIdEmotionServices';
 
 class SuggestionController {
   public async getSuggestion(req: Request, res: Response): Promise<Response> {
+    const suggestionCreateService = new SuggestionCreateService();
+    const getByIdEmotionsServices = new GetByIdEmotionsServices();
+
     try {
       const { emotionId } = req.params;
 
-      const emotion = await EmotionService.getEmotionById(emotionId);
+      const emotion = await getByIdEmotionsServices.getEmotionById(emotionId);
 
       if (!emotion) {
         return res.status(404).json({ error: 'Emoção não encontrada' });
       }
 
-      const suggestion = await SuggestionService.generateSuggestion(emotion);
+      const suggestion = await suggestionCreateService.create(emotion);
 
       return res
         .status(200)
