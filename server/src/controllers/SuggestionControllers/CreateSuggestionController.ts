@@ -1,30 +1,24 @@
 import { Request, Response } from 'express';
 import { SuggestionCreateService } from '../../services/SuggestionService/CreateSuggestionServices';
-import { GetByIdEmotionsServices } from '../../services/EmotionServices/GetByIdEmotionServices';
 
-class SuggestionController {
-  public async getSuggestion(req: Request, res: Response): Promise<Response> {
+export class SuggestionController {
+  public async getSuggestion(
+    request: Request,
+    response: Response
+  ): Promise<Response> {
     const suggestionCreateService = new SuggestionCreateService();
-    const getByIdEmotionsServices = new GetByIdEmotionsServices();
 
     try {
-      const { emotionId } = req.params;
+      const userId = request.user.id;
+      const { emotionId } = request.body;
 
-      const emotion = await getByIdEmotionsServices.getEmotionById(emotionId);
-
-      if (!emotion) {
-        return res.status(404).json({ error: 'Emoção não encontrada' });
-      }
-
-      const suggestion = await suggestionCreateService.create(emotion);
-
-      return res
-        .status(200)
-        .json({ message: 'Sugestão gerada com sucesso', suggestion });
+      const result = await suggestionCreateService.create(userId, emotionId);
+      return response.status(201).json(result);
     } catch (error) {
-      return res.status(500).json({ error: 'Erro ao gerar sugestão' });
+      if (error instanceof Error) {
+        return response.status(400).json({ error: error.message });
+      }
+      return response.status(500).json({ error: 'Erro interno do servidor' });
     }
   }
 }
-
-export default new SuggestionController();
