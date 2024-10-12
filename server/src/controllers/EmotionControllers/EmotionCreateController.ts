@@ -7,6 +7,7 @@ export class EmotionCreateController {
 
     try {
       const userId = request.user.id;
+
       const { emotion } = request.body;
 
       if (!userId || !emotion) {

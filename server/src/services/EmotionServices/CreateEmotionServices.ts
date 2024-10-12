@@ -1,14 +1,13 @@
 import { getCustomRepository } from 'typeorm';
 import { EmotionRepository } from '../../repositories/EmotionRepository';
-
-import { Emotion } from '../../entities/Emotion';
-
 import { UserRepository } from '../../repositories/UsersRepository';
+import { SuggestionCreateService } from '../../services/SuggestionService/CreateSuggestionServices';
 
 export class EmotionCreateService {
   public async createEmotion(userId: string, emotion: string) {
     const emotionRepository = getCustomRepository(EmotionRepository);
     const userRepository = getCustomRepository(UserRepository);
+    const suggestionCreateService = new SuggestionCreateService();
 
     if (!userId || !emotion) {
       throw new Error('ID de usuário e emoção são obrigatórios');
@@ -26,6 +25,11 @@ export class EmotionCreateService {
     });
 
     await emotionRepository.save(newEmotion);
+
+    const suggestion = await suggestionCreateService.create(
+      userId,
+      newEmotion.id
+    );
 
     return {
       emotion: newEmotion,
