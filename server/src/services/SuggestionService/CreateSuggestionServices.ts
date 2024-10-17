@@ -20,10 +20,8 @@ class SuggestionService {
       throw new Error('Emoção não encontrada ou não pertence ao usuário');
     }
 
-    // Aqui vamos fazer a chamada para uma API de IA para gerar a sugestão
     const suggestionResponse = await this.getSuggestionFromAI(emotion.emotion);
 
-    // Criação da sugestão
     const suggestion = suggestionRepository.create({
       description: suggestionResponse,
       emotion,
@@ -38,7 +36,6 @@ class SuggestionService {
     try {
       const response = await axios.post('URL_DA_API_DE_IA', {
         prompt: `Baseado no seguinte sentimento: "${emotionText}", forneça uma sugestão de autocuidado.`,
-        // Outros parâmetros que sua API de IA pode exigir
       });
 
       return response.data.suggestion || 'Não foi possível gerar uma sugestão';
