@@ -7,8 +7,6 @@ import {
   OneToMany,
 } from 'typeorm';
 
-import { Emotion } from './Emotion';
-
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -31,9 +29,6 @@ export class User {
 
   @Column({ nullable: true })
   avatar?: string;
-
-  @OneToMany(() => Emotion, (emotion) => emotion.user)
-  emotions: Emotion[] | undefined;
 
   @CreateDateColumn()
   created_at!: Date;
