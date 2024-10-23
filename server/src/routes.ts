@@ -1,11 +1,10 @@
 import { Router } from 'express';
 
-import routerAuth from './router/UserAuthenticate';
-import userRouter from './router/UserRoutes';
+const router = Router();
 
-const routes = Router();
+// Aqui você pode importar suas rotas específicas e adicioná-las ao router
+// router.use('/auth', authRoutes);
+// router.use('/bills', billsRoutes);
+// router.use('/budget', budgetRoutes);
 
-routes.use(routerAuth);
-routes.use(userRouter);
-
-export default routes;
+export default router;
