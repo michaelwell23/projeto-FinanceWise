@@ -3,21 +3,24 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/app.ts"
+    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "migration:run": "typeorm migration:run"
   },
   "license": "MIT",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "pg": "^8.13.0",
     "reflect-metadata": "^0.2.2",
     "ts-node-dev": "^2.0.0",
-    "typeorm": "^0.3.20",
-    "typescript": "^5.6.3"
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.9",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
   }
 }
