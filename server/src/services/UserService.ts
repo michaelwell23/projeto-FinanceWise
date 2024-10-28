@@ -1,27 +1,22 @@
 import { getCustomRepository } from 'typeorm';
-import { UserRepository } from '../repositories/UserRepositorie';
+import { UserRepository } from '../repositories/UserRepository';
 import { User } from '../entities/User';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
-interface UserRequest {
+interface CreateUserDTO {
   name: string;
   email: string;
   password: string;
-  avatar?: string;
 }
 
-class UserService {
-  async createUser({
-    name,
-    email,
-    password,
-    avatar,
-  }: UserRequest): Promise<User> {
+export class UserService {
+  async register({ name, email, password }: CreateUserDTO): Promise<User> {
     const userRepository = getCustomRepository(UserRepository);
+    const existingUser = await userRepository.findByEmail(email);
 
-    const userAlreadyExists = await userRepository.findOne({ email });
-    if (userAlreadyExists) {
-      throw new Error('User already exists');
+    if (existingUser) {
+      throw new Error('User already exists.');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -30,12 +25,25 @@ class UserService {
       name,
       email,
       password: hashedPassword,
-      avatar,
     });
 
     await userRepository.save(user);
+
     return user;
   }
-}
 
-export { UserService };
+  async authenticate(email: string, password: string): Promise<string> {
+    const userRepository = getCustomRepository(UserRepository);
+    const user = await userRepository.findByEmail(email);
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      throw new Error('Invalid credentials.');
+    }
+
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      expiresIn: '1d',
+    });
+
+    return token;
+  }
+}

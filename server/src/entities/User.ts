@@ -3,25 +3,26 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @Column()
-  name: string;
+  id?: string;
 
   @Column({ unique: true })
-  email: string;
+  email?: string;
 
   @Column()
-  password: string;
+  password?: string;
 
   @Column({ nullable: true })
-  avatar: string;
+  profileImage?: string;
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt?: Date;
+
+  @UpdateDateColumn()
+  updatedAt?: Date;
 }
