@@ -1,6 +1,6 @@
-// controllers/User/UserCreateController.ts
+import * as Yup from 'yup';
 import { Request, Response } from 'express';
-import { UserCreateServices } from '../../services/User/UserCreateServices';
+import { UserCreateServices } from '../../services/User/UserCreateService';
 import { AppError } from '../../errors/AppError';
 
 export class UserCreateController {
@@ -29,7 +29,7 @@ export class UserCreateController {
       };
 
       return response.status(201).json(userResponse);
-    } catch (error) {
+    } catch (error: unknown) {
       if (error instanceof Yup.ValidationError) {
         return response.status(400).json({ errors: error.errors });
       }
