@@ -7,7 +7,7 @@ import { UserDeleteController } from '../controllers/User/UserDeleteController';
 const userRouter = Router();
 
 const userCreateController = new UserCreateController();
-const userUpdateController = new UserDeleteController();
+const userUpdateController = new UserUpdateController();
 const userDeleteController = new UserDeleteController();
 
 userRouter.post('/users', userCreateController.create);

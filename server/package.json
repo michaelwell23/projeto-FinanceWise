@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.ts",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "migration:run": "typeorm migration:run"
@@ -26,6 +26,7 @@
     "@types/multer": "^1.4.12",
     "@types/node": "^22.7.9",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.6.3"
   }
 }
