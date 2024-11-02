@@ -10,8 +10,17 @@ const userCreateController = new UserCreateController();
 const userUpdateController = new UserUpdateController();
 const userDeleteController = new UserDeleteController();
 
-userRouter.post('/users', userCreateController.create);
-userRouter.put('/users/:id', userUpdateController.update);
-userRouter.delete('/users/:id', userDeleteController.delete);
+userRouter.post(
+  '/users',
+  userCreateController.create.bind(userCreateController)
+);
+userRouter.put(
+  '/users/:id',
+  userUpdateController.update.bind(userUpdateController)
+);
+userRouter.delete(
+  '/users/:id',
+  userDeleteController.delete.bind(userDeleteController)
+);
 
 export default userRouter;

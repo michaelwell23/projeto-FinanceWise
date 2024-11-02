@@ -3,6 +3,6 @@ import userRoutes from './router/userRouter';
 
 const routes = Router();
 
-routes.use('/users', userRoutes);
+routes.use(userRoutes);
 
-export { routes };
+export default routes;

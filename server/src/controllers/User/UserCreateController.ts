@@ -4,7 +4,7 @@ import { UserCreateServices } from '../../services/User/UserCreateService';
 import { AppError } from '../../errors/AppError';
 
 export class UserCreateController {
-  async create(request: Request, response: Response): Promise<Response> {
+  public async create(request: Request, response: Response): Promise<Response> {
     const { name, email, password } = request.body;
     const avatar = request.file ? request.file.filename : undefined;
 
