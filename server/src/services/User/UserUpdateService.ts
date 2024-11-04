@@ -35,12 +35,11 @@ export class UserUpdateService {
         6,
         'Password must be at least 6 characters long'
       ),
-      oldPassword: Yup.string().when('password', (password, schema) => {
-        return password
-          ? schema.required(
-              'Current password is required to set a new password'
-            )
-          : schema;
+      oldPassword: Yup.string().when('password', {
+        is: (val: string) => !!val,
+        then: Yup.string().required(
+          'Current password is required to set a new password'
+        ),
       }),
     });
 
@@ -57,24 +56,28 @@ export class UserUpdateService {
       user.email = email;
     }
 
-    if (avatar) user.avatar = avatar;
     if (name) user.name = name;
+    if (avatar) user.avatar = avatar;
 
-    if (password && oldPassword) {
-      if (user.password) {
-        const passwordMatch = await compare(oldPassword, user.password);
-        if (!passwordMatch) {
-          throw new Error('Old password does not match');
-        }
-        user.password = await hash(password, 10);
-      } else {
-        throw new Error('User does not have an existing password set');
+    if (password) {
+      if (!oldPassword) {
+        throw new Error('Current password is required to set a new password');
       }
+      const passwordMatch = await compare(oldPassword, user.password || '');
+      if (!passwordMatch) {
+        throw new Error('Old password does not match');
+      }
+      user.password = await hash(password, 10);
     }
 
     await userRepository.save(user);
 
     const { password: _, ...userResponse } = user;
-    return userResponse;
+
+    const avatarUrl = avatar
+      ? `http://localhost:3333/uploads/${avatar}`
+      : user.avatar;
+
+    return { ...userResponse, avatar: avatarUrl };
   }
 }

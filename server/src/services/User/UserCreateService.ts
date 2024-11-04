@@ -49,7 +49,7 @@ export class UserCreateServices {
       { id: user.id },
       process.env.JWT_SECRET || 'secret',
       {
-        expiresIn: '1d',
+        expiresIn: '8d',
       }
     );
 

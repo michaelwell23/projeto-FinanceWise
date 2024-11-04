@@ -4,7 +4,7 @@ import { UserCreateServices } from '../../services/User/UserCreateService';
 import { AppError } from '../../errors/AppError';
 
 export class UserCreateController {
-  public async create(request: Request, response: Response): Promise<Response> {
+  async create(request: Request, response: Response): Promise<Response> {
     const { name, email, password } = request.body;
     const avatar = request.file ? request.file.filename : undefined;
 
@@ -18,10 +18,11 @@ export class UserCreateController {
       });
 
       const avatar_url = avatar
-        ? `${request.protocol}://${request.get('host')}/uploads/${avatar}`
+        ? `http://localhost:3333/uploads/${avatar}`
         : null;
 
       const userResponse = {
+        id: user.id,
         name: user.name,
         email: user.email,
         avatar: avatar_url,
