@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { AccountCreateService } from '../../services/Account/AccountCreateService';
 
-export class AccountController {
+export class AccountCreateController {
   private accountService: AccountCreateService;
 
   constructor() {
