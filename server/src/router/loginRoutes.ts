@@ -5,6 +5,6 @@ import { authMiddleware } from '../middleware/Authenticate';
 const authController = new AuthController();
 const userRouter = Router();
 
-userRouter.post('/login', authController.login.bind(authController));
+userRouter.post('/signin', authController.login.bind(authController));
 
-export { userRouter };
+export default userRouter;

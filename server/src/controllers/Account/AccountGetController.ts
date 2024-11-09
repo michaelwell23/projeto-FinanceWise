@@ -3,6 +3,7 @@ import { AccountGetService } from '../../services/Account/AccountGetService';
 
 export class AccountGetController {
   private accountGetService: AccountGetService;
+  list: any;
 
   constructor() {
     this.accountGetService = new AccountGetService();
