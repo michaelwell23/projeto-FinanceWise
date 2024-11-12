@@ -8,6 +8,7 @@ import {
 
 @Entity('users')
 export class User {
+  [x: string]: any;
   @PrimaryGeneratedColumn('uuid')
   id?: string;
 
