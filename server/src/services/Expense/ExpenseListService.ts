@@ -1,9 +1,10 @@
 import { getCustomRepository } from 'typeorm';
 import { ExpenseRepository } from '../../repositories/ExpenseRepository';
 
-export class ExpenseListService {
-  public async listExpenses(userId: string) {
+export class ListExpensesService {
+  async execute(userId: string) {
     const expenseRepository = getCustomRepository(ExpenseRepository);
-    return await expenseRepository.findOne(userId);
+
+    return await expenseRepository.find({ where: { userId } });
   }
 }
