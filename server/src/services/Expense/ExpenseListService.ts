@@ -1,7 +1,7 @@
 import { getCustomRepository } from 'typeorm';
 import { ExpenseRepository } from '../../repositories/ExpenseRepository';
 
-export class ListExpensesService {
+export class ExpensesListService {
   async execute(userId: string) {
     const expenseRepository = getCustomRepository(ExpenseRepository);
 

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { ExpenseUpdateService } from '../../services/Expense/ExpenseUpdateService';
 
-export class UpdateExpenseController {
+export class ExpenseUpdateController {
   async update(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
     const { name, amount, dueDate, category } = request.body;

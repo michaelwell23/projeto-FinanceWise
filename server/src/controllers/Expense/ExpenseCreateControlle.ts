@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { CreateExpenseService } from '../../services/Expense/ExpenseCreateService';
 
-export class CreateExpenseController {
+export class ExpenseCreateController {
   async create(request: Request, response: Response): Promise<Response> {
     const { name, amount, dueDate, category } = request.body;
     const userId = request.userId;
