@@ -4,7 +4,7 @@ import { AccountCreateController } from '../controllers/Account/AcountCreateCont
 import { AccountUpdateController } from '../controllers/Account/AccountUpdateController';
 import { AccountDeleteController } from '../controllers/Account/AccountDeleteController';
 import { AccountGetController } from '../controllers/Account/AccountGetController';
-import { authMiddleware } from '../middleware/Authenticate';
+import authMiddleware from '../middleware/auth';
 
 const accountRouter = Router();
 
@@ -13,29 +13,24 @@ const accountUpdateController = new AccountUpdateController();
 const accountDeleteController = new AccountDeleteController();
 const accountGetController = new AccountGetController();
 
-accountRouter.get(
-  '/accounts',
-  accountGetController.getAll.bind(accountGetController)
-);
+accountRouter.use(authMiddleware);
 
-accountRouter.post(
-  '/accounts',
-  accountCreateController.create.bind(accountCreateController)
-);
+accountRouter.get('/accounts', authMiddleware, accountGetController.getAll);
+
+accountRouter.post('/accounts', authMiddleware, accountCreateController.create);
 
 accountRouter.put(
   '/accounts/:id',
-  accountUpdateController.update.bind(accountUpdateController)
+  authMiddleware,
+  accountUpdateController.update
 );
 
 accountRouter.delete(
   '/accounts/:id',
-  accountDeleteController.delete.bind(accountDeleteController)
+  authMiddleware,
+  accountDeleteController.delete
 );
 
-accountRouter.get(
-  '/accounts/:id',
-  accountGetController.getOne.bind(accountGetController)
-);
+accountRouter.get('/accounts/:id', authMiddleware, accountGetController.getOne);
 
 export default accountRouter;

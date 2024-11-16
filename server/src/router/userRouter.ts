@@ -1,6 +1,8 @@
 import { Router } from 'express';
 
 import { upload } from '../config/multer';
+import authMiddleware from '../middleware/auth';
+
 import { UserCreateController } from '../controllers/User/UserCreateController';
 import { UserUpdateController } from '../controllers/User/UserUpdateController';
 import { UserDeleteController } from '../controllers/User/UserDeleteController';
@@ -11,19 +13,14 @@ const userCreateController = new UserCreateController();
 const userUpdateController = new UserUpdateController();
 const userDeleteController = new UserDeleteController();
 
-userRouter.post(
-  '/users',
-  upload.single('avatar'),
-  userCreateController.create.bind(userCreateController)
-);
+userRouter.post('/users', upload.single('avatar'), userCreateController.create);
+
 userRouter.put(
   '/users/:id',
+  authMiddleware,
   upload.single('avatar'),
-  userUpdateController.update.bind(userUpdateController)
+  userUpdateController.update
 );
-userRouter.delete(
-  '/users/:id',
-  userDeleteController.delete.bind(userDeleteController)
-);
+userRouter.delete('/users/:id', authMiddleware, userDeleteController.delete);
 
 export default userRouter;

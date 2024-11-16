@@ -3,8 +3,7 @@ import { ExpenseCreateController } from '../controllers/Expense/ExpenseCreateCon
 import { ExpensesListController } from '../controllers/Expense/ExpenseListController';
 import { ExpenseDeleteController } from './../controllers/Expense/ExpenseDeleteControlle';
 import { ExpenseUpdateController } from '../controllers/Expense/ExpenseUpdateService';
-
-// import { ensureAuthenticated } from '../middlewares/ensureAuthenticated';
+import authMiddleware from '../middleware/auth';
 
 const expenseRouter = Router();
 
@@ -13,21 +12,19 @@ const expensesListController = new ExpensesListController();
 const expenseDeleteController = new ExpenseDeleteController();
 const expenseUpdateController = new ExpenseUpdateController();
 
-expenseRouter.post(
-  '/expenses',
-  expenseCreateController.create.bind(expenseCreateController)
-);
+expenseRouter.use(authMiddleware);
+
+expenseRouter.post('/expenses', authMiddleware, expenseCreateController.create);
 expenseRouter.put(
   '/expenses/:id',
-  expenseUpdateController.update.bind(expenseUpdateController)
+  authMiddleware,
+  expenseUpdateController.update
 );
-expenseRouter.get(
-  '/expenses',
-  expensesListController.list.bind(expensesListController)
-);
+expenseRouter.get('/expenses', authMiddleware, expensesListController.list);
 expenseRouter.delete(
   '/expenses/:id',
-  expenseDeleteController.delete.bind(expenseDeleteController)
+  authMiddleware,
+  expenseDeleteController.delete
 );
 
 export default expenseRouter;
