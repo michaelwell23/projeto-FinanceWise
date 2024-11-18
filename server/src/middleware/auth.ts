@@ -8,21 +8,14 @@ export default async function authMiddleware(
   res: Response,
   next: NextFunction
 ) {
-  const authHeader = req.headers.authorization;
+  const token = req.cookies.authToken;
 
-  if (!authHeader) {
+  if (!token) {
     return res.status(401).json({ error: 'Token não fornecido' });
   }
 
-  const [, token] = authHeader.split(' ');
-
   try {
-    const secretKey = process.env.JWT_SECRET;
-
-    if (!secretKey) {
-      throw new Error('JWT secret is undefined');
-    }
-
+    const secretKey = process.env.JWT_SECRET || 'defaultSecret';
     const decoded = jwt.verify(token, secretKey) as JwtPayload;
 
     if (decoded && typeof decoded === 'object' && 'id' in decoded) {
@@ -38,9 +31,9 @@ export default async function authMiddleware(
       req.user = user;
 
       return next();
-    } else {
-      return res.status(401).json({ error: 'Token inválido' });
     }
+
+    return res.status(401).json({ error: 'Token inválido' });
   } catch (err) {
     return res.status(401).json({ error: 'Token inválido' });
   }
