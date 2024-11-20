@@ -1,40 +1,26 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import { getCustomRepository } from 'typeorm';
-import { UserRepository } from '../repositories/UserRepository';
+import jwt from 'jsonwebtoken';
 
-export default async function authMiddleware(
-  req: Request,
-  res: Response,
+export const authMiddleware = async (
+  request: Request,
+  response: Response,
   next: NextFunction
-) {
-  const token = req.cookies.authToken;
-
-  if (!token) {
-    return res.status(401).json({ error: 'Token não fornecido' });
-  }
-
+) => {
   try {
-    const secretKey = process.env.JWT_SECRET || 'defaultSecret';
-    const decoded = jwt.verify(token, secretKey) as JwtPayload;
+    const token =
+      request.cookies.authToken || request.headers.authorization?.split(' ')[1];
 
-    if (decoded && typeof decoded === 'object' && 'id' in decoded) {
-      const { id } = decoded;
-
-      const userRepository = getCustomRepository(UserRepository);
-      const user = await userRepository.findOne(id);
-
-      if (!user) {
-        return res.status(401).json({ error: 'Usuário não encontrado' });
-      }
-
-      req.user = user;
-
-      return next();
+    if (!token) {
+      return response.status(401).json({ error: 'Token not provided' });
     }
 
-    return res.status(401).json({ error: 'Token inválido' });
-  } catch (err) {
-    return res.status(401).json({ error: 'Token inválido' });
+    const secret = process.env.JWT_SECRET || 'defaultSecret';
+
+    const decoded = jwt.verify(token, secret);
+
+    request.user = decoded;
+    return next();
+  } catch (error) {
+    return response.status(401).json({ error: 'Invalid or expired token' });
   }
-}
+};

@@ -1,4 +1,3 @@
-// src/services/Account/AccountService.ts
 import { getCustomRepository } from 'typeorm';
 import * as Yup from 'yup';
 import { AccountRepository } from '../../repositories/AccountRepository';
