@@ -10,23 +10,23 @@ import { User } from './User';
 @Entity('accounts')
 export class Account {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id?: string;
 
   @Column()
-  name: string;
+  name?: string;
 
   @Column('decimal')
-  amount: number;
+  amount?: number;
 
   @Column('date')
-  dueDate: Date;
+  dueDate?: Date;
 
   @Column()
-  category: string;
+  category?: string;
 
   @ManyToOne(() => User, (user) => user.accounts)
-  user: User;
+  user?: User;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt?: Date;
 }

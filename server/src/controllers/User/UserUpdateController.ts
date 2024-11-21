@@ -2,20 +2,15 @@ import { Request, Response } from 'express';
 import { UserUpdateService } from '../../services/User/UserUpdateService';
 
 export class UserUpdateController {
-  private userUpdateService: UserUpdateService;
-
-  constructor() {
-    this.userUpdateService = new UserUpdateService();
-    this.update = this.update.bind(this);
-  }
-
-  async update(request: Request, response: Response): Promise<Response> {
+  async update(request: Request, response: Response): Promise<void> {
     const { id } = request.params;
     const { name, email, password, oldPassword } = request.body;
     const avatar = request.file ? request.file.filename : undefined;
 
+    const userUpdateService = new UserUpdateService();
+
     try {
-      const updatedUser = await this.userUpdateService.updateUser({
+      const updatedUser = await userUpdateService.updateUser({
         id,
         name,
         email,
@@ -24,14 +19,16 @@ export class UserUpdateController {
         avatar,
       });
 
-      return response.status(200).json(updatedUser);
+      response.status(200).json(updatedUser);
     } catch (error: unknown) {
       if (error instanceof Error) {
-        return response.status(400).json({
+        response.status(400).json({
           error: error.message,
         });
+        return;
       }
-      return response.status(500).json({
+
+      response.status(500).json({
         error: 'Unexpected error occurred',
       });
     }

@@ -11,26 +11,26 @@ import { User } from './User';
 @Entity('expenses')
 export class ExpenseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id?: string;
 
   @Column()
-  name: string;
+  name?: string;
 
   @Column('decimal')
-  amount: number;
+  amount?: number;
 
   @Column('date')
-  dueDate: Date;
+  dueDate?: Date;
 
   @Column()
-  category: string;
+  category?: string;
 
   @ManyToOne(() => User, (user) => user.expenses)
-  user: User;
+  user?: User;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt?: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt?: Date;
 }

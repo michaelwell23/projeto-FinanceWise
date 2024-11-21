@@ -4,7 +4,7 @@ import { UserCreateServices } from '../../services/User/UserCreateService';
 import { AppError } from '../../errors/AppError';
 
 export class UserCreateController {
-  async create(request: Request, response: Response): Promise<Response> {
+  async create(request: Request, response: Response): Promise<void> {
     const { name, email, password } = request.body;
     const avatar = request.file ? request.file.filename : undefined;
 
@@ -29,16 +29,18 @@ export class UserCreateController {
         token,
       };
 
-      return response.status(201).json(userResponse);
+      response.status(201).json(userResponse);
     } catch (error: unknown) {
       if (error instanceof Yup.ValidationError) {
-        return response.status(400).json({ errors: error.errors });
+        response.status(400).json({ errors: error.errors });
+        return;
       }
       if (error instanceof AppError) {
-        return response.status(error.statusCode).json({ error: error.message });
+        response.status(error.statusCode).json({ error: error.message });
+        return;
       }
 
-      return response.status(500).json({
+      response.status(500).json({
         error: 'Unexpected error occurred',
       });
     }

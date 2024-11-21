@@ -9,13 +9,11 @@ export class AccountCreateController {
       return response.status(400).json({ error: 'User ID is required' });
     }
 
-    const userId = request.userId;
-
     const accountCreateService = new AccountCreateService();
 
     try {
       const account = await accountCreateService.createAccount({
-        userId,
+        userId: request.userId,
         name,
         amount,
         dueDate,
@@ -24,11 +22,10 @@ export class AccountCreateController {
 
       return response.status(201).json(account);
     } catch (error) {
-      if (error instanceof Error) {
-        return response.status(400).json({ error: error.message });
-      }
-
-      return response.status(400).json({ error: 'An unknown error occurred' });
+      return response.status(400).json({
+        error:
+          error instanceof Error ? error.message : 'Unknown error occurred',
+      });
     }
   }
 }

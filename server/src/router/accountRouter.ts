@@ -15,22 +15,10 @@ const accountGetController = new AccountGetController();
 
 accountRouter.use(authMiddleware);
 
-accountRouter.get('/accounts', authMiddleware, accountGetController.getAll);
-
-accountRouter.post('/accounts', authMiddleware, accountCreateController.create);
-
-accountRouter.put(
-  '/accounts/:id',
-  authMiddleware,
-  accountUpdateController.update
-);
-
-accountRouter.delete(
-  '/accounts/:id',
-  authMiddleware,
-  accountDeleteController.delete
-);
-
-accountRouter.get('/accounts/:id', authMiddleware, accountGetController.getOne);
+accountRouter.get('/accounts', accountGetController.getAll);
+accountRouter.post('/accounts', accountCreateController.create);
+accountRouter.get('/accounts/:id', accountGetController.getOne);
+accountRouter.put('/accounts/:id', accountUpdateController.update);
+accountRouter.delete('/accounts/:id', accountDeleteController.delete);
 
 export default accountRouter;

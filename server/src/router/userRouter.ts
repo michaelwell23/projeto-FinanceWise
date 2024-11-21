@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { upload } from '../config/multer';
-import authMiddleware from '../middleware/auth';
+import { authMiddleware } from '../middleware/auth';
 
 import { UserCreateController } from '../controllers/User/UserCreateController';
 import { UserUpdateController } from '../controllers/User/UserUpdateController';
@@ -17,7 +17,6 @@ userRouter.post('/users', upload.single('avatar'), userCreateController.create);
 
 userRouter.put(
   '/users/:id',
-  authMiddleware,
   upload.single('avatar'),
   userUpdateController.update
 );

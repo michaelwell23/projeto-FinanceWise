@@ -11,17 +11,17 @@ import { User } from './User';
 @Entity('budgets')
 export class Budget {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id?: string;
 
   @Column('decimal', { precision: 10, scale: 2 })
-  maxAmount: number;
+  maxAmount?: number;
 
   @ManyToOne(() => User, (user) => user.budgets)
-  user: User;
+  user?: User;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at?: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updated_at?: Date;
 }

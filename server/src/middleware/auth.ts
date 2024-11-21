@@ -5,22 +5,27 @@ export const authMiddleware = async (
   request: Request,
   response: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const token =
-      request.cookies.authToken || request.headers.authorization?.split(' ')[1];
+      request.cookies?.authToken ||
+      request.headers.authorization?.split(' ')[1];
 
     if (!token) {
-      return response.status(401).json({ error: 'Token not provided' });
+      response.status(401).json({ error: 'Token not provided' });
+      return;
     }
 
     const secret = process.env.JWT_SECRET || 'defaultSecret';
 
-    const decoded = jwt.verify(token, secret);
+    const decoded = jwt.verify(token, secret) as { userId: string };
 
-    request.user = decoded;
-    return next();
+    request.userId = decoded.userId;
+
+    next();
   } catch (error) {
-    return response.status(401).json({ error: 'Invalid or expired token' });
+    response.status(401).json({ error: 'Invalid or expired token' });
   }
 };
+
+export default authMiddleware;
