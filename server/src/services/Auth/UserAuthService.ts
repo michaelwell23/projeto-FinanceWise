@@ -10,6 +10,10 @@ interface IAuthenticateRequest {
 
 export class AuthService {
   public async authenticateUser({ email, password }: IAuthenticateRequest) {
+    if (!email || !password) {
+      throw new Error('Email and password are required');
+    }
+
     const userRepository = getCustomRepository(UserRepository);
 
     const user = await userRepository.findOne({ where: { email } });
@@ -18,7 +22,7 @@ export class AuthService {
       throw new Error('Invalid email or password');
     }
 
-    const passwordMatch = await compare(password, user.password);
+    const passwordMatch = await compare(password, user.password || '');
 
     if (!passwordMatch) {
       throw new Error('Invalid email or password');
@@ -27,7 +31,7 @@ export class AuthService {
     const secret = process.env.JWT_SECRET || 'defaultSecret';
 
     const token = jwt.sign({ id: user.id }, secret, {
-      expiresIn: process.env.EXPIRES_SECRET,
+      expiresIn: process.env.EXPIRES_SECRET || '1d',
     });
 
     console.log('Generated JWT:', token);

@@ -7,9 +7,7 @@ export const authMiddleware = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const token =
-      request.cookies?.authToken ||
-      request.headers.authorization?.split(' ')[1];
+    const token = request.headers.authorization?.split(' ')[1];
 
     if (!token) {
       response.status(401).json({ error: 'Token not provided' });

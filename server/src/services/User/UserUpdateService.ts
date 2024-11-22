@@ -35,11 +35,12 @@ export class UserUpdateService {
         6,
         'Password must be at least 6 characters long'
       ),
-      oldPassword: Yup.string().when('password', {
-        is: (val: string) => !!val,
-        then: Yup.string().required(
-          'Current password is required to set a new password'
-        ),
+      oldPassword: Yup.string().when('password', (password, schema) => {
+        return password
+          ? schema.required(
+              'Current password is required to set a new password'
+            )
+          : schema;
       }),
     });
 
