@@ -1,6 +1,6 @@
 import { getCustomRepository } from 'typeorm';
 import { UserRepository } from '../../repositories/UserRepository';
-import { compare } from 'bcrypt';
+import { compare } from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 interface IAuthenticateRequest {

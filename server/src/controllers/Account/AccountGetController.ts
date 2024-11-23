@@ -5,10 +5,6 @@ export class AccountGetController {
   async getAll(request: Request, response: Response): Promise<Response> {
     const { userId } = request;
 
-    if (!userId) {
-      return response.status(400).json({ error: 'User ID is required' });
-    }
-
     const accountGetService = new AccountGetService();
 
     try {
@@ -25,10 +21,6 @@ export class AccountGetController {
   async getOne(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
     const { userId } = request;
-
-    if (!userId) {
-      return response.status(400).json({ error: 'User ID is required' });
-    }
 
     const accountGetService = new AccountGetService();
 

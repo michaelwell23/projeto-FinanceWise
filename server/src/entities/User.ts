@@ -33,11 +33,11 @@ export class User {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt?: Date;
 
-  @OneToMany(() => ExpenseEntity, (expense) => expense.user)
-  expenses?: ExpenseEntity[];
-
   @OneToMany(() => Account, (account) => account.user)
   accounts?: Account[];
+
+  @OneToMany(() => ExpenseEntity, (expense) => expense.user)
+  expenses?: ExpenseEntity[];
 
   @OneToMany(() => Budget, (budget) => budget.user)
   budgets?: Budget[];

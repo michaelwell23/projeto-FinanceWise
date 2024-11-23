@@ -4,13 +4,12 @@
   "type": "commonjs",
   "main": "app.ts",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "migration:run": "typeorm migration:run"
+    "dev": "tsnd --transpile-only --ignore-watch node_modules --respawn src/server.ts",
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
   "license": "MIT",
   "dependencies": {
     "@types/nodemailer": "^6.4.15",
-    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.5.1",
     "cors": "^2.8.5",
@@ -30,7 +29,6 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
@@ -44,7 +42,7 @@
     "jest": "^29.7.0",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
-    "ts-node": "^10.9.2",
+    "ts-node-dev": "^10.9.2",
     "typescript": "^5.5.4"
   }
 }

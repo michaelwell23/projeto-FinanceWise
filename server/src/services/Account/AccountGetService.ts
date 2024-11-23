@@ -6,7 +6,10 @@ export class AccountGetService {
   public async getAllAccounts(userId: string): Promise<Account[]> {
     const accountRepository = getCustomRepository(AccountRepository);
 
-    const accounts = await accountRepository.find({ where: { userId } });
+    const accounts = await accountRepository.find({
+      where: { user: { id: userId } },
+      relations: ['user'],
+    });
 
     if (!accounts.length) {
       throw new Error('No accounts found for this user');
@@ -21,7 +24,10 @@ export class AccountGetService {
   ): Promise<Account | undefined> {
     const accountRepository = getCustomRepository(AccountRepository);
 
-    const account = await accountRepository.findOne({ where: { id, userId } });
+    const account = await accountRepository.findOne({
+      where: { id, user: { id: userId } },
+      relations: ['user'],
+    });
 
     if (!account) {
       throw new Error('Account not found');
