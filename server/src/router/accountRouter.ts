@@ -1,11 +1,11 @@
 import { Router } from 'express';
 
+import authMiddleware from '../middleware/auth';
+
 import { AccountCreateController } from '../controllers/Account/AccountCreateController';
 import { AccountUpdateController } from '../controllers/Account/AccountUpdateController';
 import { AccountDeleteController } from '../controllers/Account/AccountDeleteController';
 import { AccountGetController } from '../controllers/Account/AccountGetController';
-
-import authMiddleware from '../middleware/auth';
 
 const accountRouter = Router();
 
@@ -16,9 +16,9 @@ const accountGetController = new AccountGetController();
 
 accountRouter.use(authMiddleware);
 
+accountRouter.post('/accounts', accountCreateController.create);
 accountRouter.get('/accounts', accountGetController.getAll);
 accountRouter.get('/accounts/:id', accountGetController.getOne);
-accountRouter.post('/accounts', accountCreateController.create);
 accountRouter.put('/accounts/:id', accountUpdateController.update);
 accountRouter.delete('/accounts/:id', accountDeleteController.delete);
 
