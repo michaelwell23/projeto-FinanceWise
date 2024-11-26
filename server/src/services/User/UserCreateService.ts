@@ -46,10 +46,10 @@ export class UserCreateServices {
     await userRepository.save(user);
 
     const token = jwt.sign(
-      { id: user.id },
+      { userId: user.id },
       process.env.JWT_SECRET || 'secret',
       {
-        expiresIn: '8d',
+        expiresIn: process.env.EXPIRES_SECRET,
       }
     );
 

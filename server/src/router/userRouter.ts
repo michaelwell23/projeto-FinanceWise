@@ -17,6 +17,7 @@ userRouter.post('/users', upload.single('avatar'), userCreateController.create);
 
 userRouter.put(
   '/users/:id',
+  authMiddleware,
   upload.single('avatar'),
   userUpdateController.update
 );

@@ -34,8 +34,6 @@ export class AuthService {
       expiresIn: process.env.EXPIRES_SECRET,
     });
 
-    console.log('Generated JWT:', token);
-
     const { password: _, ...userResponse } = user;
 
     return { user: userResponse, token };
