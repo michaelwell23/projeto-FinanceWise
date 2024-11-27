@@ -18,7 +18,10 @@ export class ExpenseUpdateController {
       });
       return response.status(200).json(updatedExpense);
     } catch (error) {
-      return response.status(400).json({ error: error.message });
+      return response.status(500).json({
+        error:
+          error instanceof Error ? error.message : 'Unexpected error occurred',
+      });
     }
   }
 }

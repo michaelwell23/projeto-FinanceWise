@@ -11,7 +11,10 @@ export class ExpenseDeleteController {
       await expenseDeleteService.execute(id);
       return response.status(204).send();
     } catch (error) {
-      return response.status(400).json({ error: error.message });
+      return response.status(500).json({
+        error:
+          error instanceof Error ? error.message : 'Unexpected error occurred',
+      });
     }
   }
 }

@@ -1,4 +1,3 @@
-// services/User/UserDeleteService.ts
 import { getCustomRepository } from 'typeorm';
 import { UserRepository } from '../../repositories/UserRepository';
 import { AppError } from '../../errors/AppError';

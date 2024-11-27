@@ -28,6 +28,9 @@ export class ExpenseEntity {
   @ManyToOne(() => User, (user) => user.expenses)
   user?: User;
 
+  @Column()
+  userId?: string;
+
   @CreateDateColumn()
   createdAt?: Date;
 

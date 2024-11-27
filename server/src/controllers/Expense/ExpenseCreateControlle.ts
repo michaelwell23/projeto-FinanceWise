@@ -4,13 +4,16 @@ import { CreateExpenseService } from '../../services/Expense/ExpenseCreateServic
 export class ExpenseCreateController {
   async create(request: Request, response: Response): Promise<Response> {
     const { name, amount, dueDate, category } = request.body;
-    const userId = request.userId;
 
     const createExpenseService = new CreateExpenseService();
 
+    if (!request.userId) {
+      return response.status(401).json({ error: 'User not authenticated' });
+    }
+
     try {
       const expense = await createExpenseService.execute({
-        userId,
+        userId: request.userId,
         name,
         amount,
         dueDate,
@@ -18,7 +21,10 @@ export class ExpenseCreateController {
       });
       return response.status(201).json(expense);
     } catch (error) {
-      return response.status(400).json({ error: error.message });
+      return response.status(500).json({
+        error:
+          error instanceof Error ? error.message : 'Unexpected error occurred',
+      });
     }
   }
 }
