@@ -4,12 +4,16 @@ import { ExpensesListController } from '../controllers/Expense/ExpenseListContro
 import { ExpenseDeleteController } from './../controllers/Expense/ExpenseDeleteControlle';
 import { ExpenseUpdateController } from '../controllers/Expense/ExpenseUpdateService';
 
+import { authMiddleware } from '../middleware/auth';
+
 const expenseRouter = Router();
 
 const expenseCreateController = new ExpenseCreateController();
 const expensesListController = new ExpensesListController();
 const expenseDeleteController = new ExpenseDeleteController();
 const expenseUpdateController = new ExpenseUpdateController();
+
+expenseRouter.use(authMiddleware);
 
 expenseRouter.post('/expenses', expenseCreateController.create);
 expenseRouter.put('/expenses/:id', expenseUpdateController.update);

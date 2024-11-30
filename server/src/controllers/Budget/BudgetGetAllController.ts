@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { BudgetGetAllService } from '../../services/Budget/BudgetGetAllServices';
+import { BudgetGetService } from '../../services/Budget/BudgetGetAllServices';
 
 export class BudgetGetController {
   async getAll(request: Request, response: Response): Promise<Response> {
@@ -9,7 +9,7 @@ export class BudgetGetController {
       return response.status(400).json({ error: 'User ID is required' });
     }
 
-    const budgetGetAllService = new BudgetGetAllService();
+    const budgetGetAllService = new BudgetGetService();
 
     try {
       const budgets = await budgetGetAllService.getAllBudgets(userId);

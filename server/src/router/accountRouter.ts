@@ -14,6 +14,8 @@ const accountUpdateController = new AccountUpdateController();
 const accountDeleteController = new AccountDeleteController();
 const accountGetController = new AccountGetController();
 
+accountRouter.use(authMiddleware);
+
 accountRouter.post('/accounts', accountCreateController.create);
 accountRouter.get('/accounts', accountGetController.getAll);
 accountRouter.get('/accounts/:id', accountGetController.getOne);

@@ -1,8 +1,9 @@
+import { getCustomRepository } from 'typeorm';
 import { BudgetRepository } from '../../repositories/BudgetRepository';
 
-export class BudgetGetAllService {
+export class BudgetGetService {
   async getAllBudgets(userId: string) {
-    const budgetRepository = new BudgetRepository();
+    const budgetRepository = getCustomRepository(BudgetRepository);
 
     const budgets = await budgetRepository.find({
       where: { user: { id: userId } },

@@ -15,12 +15,13 @@ const userDeleteController = new UserDeleteController();
 
 userRouter.post('/users', upload.single('avatar'), userCreateController.create);
 
+userRouter.use(authMiddleware);
+
 userRouter.put(
   '/users/:id',
-  authMiddleware,
   upload.single('avatar'),
   userUpdateController.update
 );
-userRouter.delete('/users/:id', authMiddleware, userDeleteController.delete);
+userRouter.delete('/users/:id', userDeleteController.delete);
 
 export default userRouter;
