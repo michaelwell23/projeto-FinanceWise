@@ -6,9 +6,8 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { ExpenseEntity } from './Expense'; // Supondo que você tenha a entidade Expense
-import { Account } from './Account'; // Nova importação da entidade Account
-import { Budget } from './Budget'; // Nova importação da entidade Budget
+import { Account } from './Account';
+import { Budget } from './Budget';
 
 @Entity('users')
 export class User {
@@ -35,9 +34,6 @@ export class User {
 
   @OneToMany(() => Account, (account) => account.user)
   accounts?: Account[];
-
-  @OneToMany(() => ExpenseEntity, (expense) => expense.user)
-  expenses?: ExpenseEntity[];
 
   @OneToMany(() => Budget, (budget) => budget.user)
   budgets?: Budget[];
