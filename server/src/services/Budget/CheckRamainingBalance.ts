@@ -38,12 +38,12 @@ export class BudgetService {
 
     const balance = Number(budget.maxAmount) - totalExpenses;
 
-    const alert =
-      balance < budget.maxAmount * 0.2
-        ? 'Warning: Your budget is almost fully used!'
-        : balance < 0
-        ? 'Alert: Your expenses exceeded your budget!'
-        : undefined;
+    let alert: string | undefined;
+    if (balance < 0) {
+      alert = 'Alert: Your expenses have exceeded your budget!';
+    } else if (balance < budget.maxAmount * 0.2) {
+      alert = 'Warning: You are nearing your budget limit!';
+    }
 
     return { balance, alert };
   }
