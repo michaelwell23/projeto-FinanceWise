@@ -7,6 +7,8 @@ import express from 'express';
 import routes from './routes';
 
 import './database';
+import './jobs/ReminderJob';
+
 dotenv.config();
 
 const app = express();
