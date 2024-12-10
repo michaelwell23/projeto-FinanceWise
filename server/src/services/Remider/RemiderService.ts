@@ -12,12 +12,10 @@ export class ReminderService {
   async sendReminders(): Promise<void> {
     const accountRepository = getCustomRepository(AccountRepository);
 
-    // Obter data de 5 dias no futuro
     const today = new Date();
     const futureDate = new Date(today);
     futureDate.setDate(today.getDate() + 5);
 
-    // Buscar contas com vencimento nos próximos 5 dias
     const accountsDueSoon = await accountRepository
       .createQueryBuilder('account')
       .where('account.dueDate BETWEEN :today AND :futureDate', {
@@ -27,7 +25,6 @@ export class ReminderService {
       .leftJoinAndSelect('account.user', 'user')
       .getMany();
 
-    // Enviar lembretes por email
     for (const account of accountsDueSoon) {
       if (account.user?.email) {
         const emailText = `Olá ${account.user.name},
