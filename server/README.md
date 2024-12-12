@@ -1,182 +1,109 @@
-# Automated Expense and Budget Manager
+<h1 align="center">
+  <img alt="mindBalance" title="mindBalance" src="./.github/logo.png" width="400px" />
+</h1>
 
-## Overview
+<p align="center">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/usuario/mindBalance?color=%2304D361">
 
-The **Automated Expense and Budget Manager** is a Node.js-based application designed to help users manage their finances efficiently. It provides functionalities such as account management, budget tracking, expense reporting, and alerts for due payments. The application ensures financial discipline by sending reminders via email or SMS and offering visual insights through expense category graphs.
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-%2304D361">
 
-### Key Features
+  <a href="https://github.com/usuario/mindBalance/stargazers">
+    <img alt="Stargazers" src="https://img.shields.io/github/stars/usuario/mindBalance?style=social">
+  </a>
+</p>
 
-1. **Account and Expense Management:**
+<p align="center">
+  <a href="#como-instalar">Como instalar?</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#documentação-das-rotas">Documentação</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#memo-licença">Licença</a>
+</p>
 
-   - Add, edit, and delete accounts and expenses.
-   - Categorize expenses and track them effectively.
-
-2. **Monthly Budget Tracking:**
-
-   - Set monthly spending limits.
-   - Get notifications when nearing budget limits.
-
-3. **Payment Reminders:**
-
-   - Receive alerts for due payments via email or SMS.
-
-4. **Expense Reporting:**
-   - Generate detailed monthly reports.
-   - Visualize spending through category-based graphs.
+Backend da aplicação **mindBalance**, desenvolvido em **Node.js** com **Express**, estruturado em uma API RESTful.
 
 ---
 
-## API Endpoints
+### Ferramentas utilizadas na aplicação:
 
-### User Management
+- [TypeORM](https://typeorm.io/) - ORM para interação com o banco de dados.
+- [Yup](https://github.com/jquense/yup) - Validação de dados de entrada.
+- [JWT](https://www.npmjs.com/package/jsonwebtoken) - Gerenciamento de autenticação por token.
+- [Bcrypt](https://www.npmjs.com/package/bcrypt) - Criptografia de senhas.
+- [DotEnv](https://github.com/motdotla/dotenv) - Configuração de variáveis de ambiente.
+- [Nodemailer](https://nodemailer.com/) - Envio de emails para notificações e comunicações.
 
-- **POST /users** - Register a new user.
+### Banco de dados da aplicação:
 
-  - Request Body:
-    ```json
-    {
-      "name": "John Doe",
-      "email": "john.doe@example.com",
-      "password": "password123"
-    }
-    ```
+- PostgreSQL
 
-- **POST /login** - Authenticate a user and return a token.
-  - Request Body:
-    ```json
-    {
-      "email": "john.doe@example.com",
-      "password": "password123"
-    }
-    ```
+### Ferramentas para o ambiente de desenvolvimento:
 
-### Account Management
-
-- **POST /accounts** - Create a new account.
-
-  - Request Body:
-    ```json
-    {
-      "name": "Electric Bill",
-      "amount": 120.5,
-      "dueDate": "2024-12-15",
-      "category": "Utilities"
-    }
-    ```
-
-- **GET /accounts** - Retrieve all accounts for the logged-in user.
-
-- **DELETE /accounts/:id** - Delete an account by its ID.
-
-### Budget Management
-
-- **POST /budgets** - Create a monthly budget.
-
-  - Request Body:
-    ```json
-    {
-      "maxAmount": 2000.0
-    }
-    ```
-
-- **GET /budgets/monthly-status** - Retrieve the current month’s budget status, including remaining balance and total expenses.
-
-### Expense Reports
-
-- **GET /reports/monthly** - Generate a detailed monthly expense report.
-  - Response Example:
-    ```json
-    {
-      "totalExpenses": 1500.75,
-      "remainingBudget": 499.25,
-      "expensesByCategory": {
-        "Food": 500.0,
-        "Utilities": 300.75,
-        "Entertainment": 700.0
-      }
-    }
-    ```
-
-### Notifications
-
-- **POST /notifications/send** - Trigger payment reminders for due accounts.
-  - Request Body:
-    ```json
-    {
-      "method": "email",
-      "email": "john.doe@example.com"
-    }
-    ```
+- [Docker](https://www.docker.com/) - Gerenciamento de containers.
+- [ESLint](https://eslint.org/) - Padronização e detecção de erros no código.
+- [Prettier](https://prettier.io/) - Formatação consistente do código.
+- [Insomnia](https://insomnia.rest/) - Teste e depuração das rotas da API.
 
 ---
 
-## Installation
+## Como instalar?
 
-### Prerequisites
+Antes de tudo, instale o [Node.js](https://nodejs.org/en/) e o [Yarn](https://classic.yarnpkg.com/pt-BR/docs/install/).
 
-- Node.js (v16 or higher)
-- PostgreSQL database
-- npm or yarn package manager
+1. Clone o repositório e entre na pasta `server`:
 
-### Setup
+```bash
+$ git clone https://github.com/usuario/mindBalance.git
+$ cd mindBalance/server
+```
 
-1. Clone the repository:
+2. Instale as dependências do projeto:
 
-   ```bash
-   git clone https://github.com/your-username/expense-manager.git
-   cd expense-manager
-   ```
+```bash
+$ yarn install
+```
 
-2. Install dependencies:
+3. Configure as variáveis de ambiente, criando um arquivo `.env` baseado no modelo `.env.example`.
 
-   ```bash
-   npm install
-   ```
+4. Rode as migrações do banco de dados:
 
-3. Configure environment variables in a `.env` file:
+```bash
+$ yarn typeorm migration:run
+```
 
-   ```
-   DATABASE_URL=postgresql://user:password@localhost:5432/expense_manager
-   SMTP_HOST=smtp.your-email-provider.com
-   SMTP_PORT=587
-   SMTP_USER=your-email@example.com
-   SMTP_PASSWORD=your-email-password
-   SMTP_FROM=YourApp <your-email@example.com>
-   JWT_SECRET=your_jwt_secret
-   ```
+5. Inicie a aplicação:
 
-4. Run database migrations:
+```bash
+$ yarn dev
+```
 
-   ```bash
-   npm run typeorm migration:run
-   ```
-
-5. Start the server:
-   ```bash
-   npm start
-   ```
+6. Utilize o [Insomnia](https://insomnia.rest/) ou outra ferramenta de sua preferência para testar as rotas da API.
 
 ---
 
-## Usage
+## Documentação das rotas
 
-- Use a tool like Postman or Insomnia to test the endpoints.
-- Authenticate first to get a JWT token.
-- Include the token in the `Authorization` header for all subsequent requests:
-  ```
-  Authorization: Bearer <your_token>
-  ```
+### Autenticação
+
+- `POST /auth/register` - Registro de um novo usuário.
+- `POST /auth/login` - Login e geração de token JWT.
+
+### Emoções e Sugestões
+
+- `POST /emotions` - Registra uma emoção enviada pelo usuário.
+- `GET /emotions` - Lista todas as emoções registradas pelo usuário.
+- `POST /suggestions` - Gera uma sugestão com base na emoção registrada.
+- `GET /suggestions` - Lista todas as sugestões geradas para o usuário.
+
+### Gerenciamento de Emoções
+
+- `DELETE /emotions/:id` - Remove uma emoção registrada.
+- `PUT /emotions/:id` - Atualiza uma emoção existente.
 
 ---
 
-## Future Improvements
+## :memo: Licença
 
-- Add recurring expense functionality.
-- Introduce advanced analytics for spending trends.
-- Support multi-currency accounts.
+Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](https://github.com/usuario/mindBalance/blob/master/LICENSE) para mais detalhes.
 
 ---
 
-## License
-
-This project is licensed under the MIT License.
+Feito com :purple_heart: por [Seu Nome](https://github.com/seuusuario)
