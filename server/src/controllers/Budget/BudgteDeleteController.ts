@@ -14,7 +14,7 @@ export class BudgetDeleteController {
 
     try {
       await budgetDeleteService.deleteBudget(id, userId);
-      return response.status(204).send(); // No Content
+      return response.status(204).send(); 
     } catch (error) {
       return response.status(400).json({
         error:

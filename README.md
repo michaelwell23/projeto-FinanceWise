@@ -1,87 +1,66 @@
-# Gestor de Contas e Despesas Automatizado
+# mindBalance
 
-Um sistema que permite cadastrar contas mensais, calcular e alertar o usuário sobre vencimentos. O usuário pode configurar orçamentos mensais e receber avisos se o limite estiver próximo de ser excedido. Além disso, o sistema envia lembretes por SMS ou email quando uma conta está perto de vencer.
-
-## Funcionalidades
-
-### Autenticação de Usuário
-
-- **Registro, login e logout**: Gerenciamento de sessão para usuários.
-- **Recuperação de senha**: Caso o usuário esqueça sua senha, ele poderá solicitar uma recuperação.
-
-### Gerenciamento de Contas
-
-- **Adicionar uma conta**: Permite adicionar informações sobre contas mensais, como nome, valor, data de vencimento e categoria.
-- **Editar e remover contas**: O usuário pode atualizar ou excluir contas.
-- **Visualizar contas cadastradas**: Listagem de todas as contas registradas pelo usuário.
-- **Alertas de vencimento**: Notificação sobre contas com vencimento próximo.
-
-### Orçamento Mensal
-
-- **Definir um limite de orçamento mensal**: O usuário pode estipular um valor máximo de despesas para o mês.
-- **Monitoramento de saldo**: O sistema calcula e monitora o saldo restante do orçamento.
-- **Alertas de orçamento excedido**: Notificação quando o orçamento mensal estiver próximo de ser ultrapassado.
-
-### Lembretes
-
-- **Lembretes de vencimento de contas**: Notificações por SMS ou email quando as contas estão próximas do vencimento.
-- **Notificações de orçamento**: Avisos quando o orçamento mensal está perto de ser atingido.
-
-### Relatórios
-
-- **Resumo de despesas**: Relatórios com o total de despesas do mês, contas pagas e pendentes.
-- **Gráficos de despesas por categoria**: Relatórios visuais que mostram onde o usuário está gastando mais.
+<p align="center"> <img alt="mindBalance" title="mindBalance" src="./server/.github/logo.png" width="400px" /> </p> <p align="center"> <img alt="Contagem de linguagens do GitHub" src="https://img.shields.io/github/languages/count/seu-usuario/mindbalance?color=%2304D361"> <img alt="Licença" src="https://img.shields.io/badge/licença-MIT-%2304D361"> <a href="https://github.com/seu-usuario/mindbalance/stargazers"> <img alt="Stargazers" src="https://img.shields.io/github/stars/seu-usuario/
+mindbalance?style=social"> </a> </p>
 
 ## Tecnologias Utilizadas
 
-- **Node.js**: Backend principal para gerenciar o sistema.
-- **TypeORM**: ORM para gerenciamento do banco de dados.
-- **Express.js**: Framework para rotas e middlewares.
-- **JWT**: Autenticação segura para os usuários.
-- **Twilio / Email API**: Envio de notificações por SMS ou email.
+<p align="center"> <a href="https://github.com/seu-usuario/mindbalance/tree/main/server"><img src="./server/.github/nodejs.svg" alt="Node.Js" /> </a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://github.com/seu-usuario/mindbalance/tree/main/web"><img src="./server/.github/reactjs.svg" alt="ReactJS"> </a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://github.com/seu-usuario/mindbalance/tree/main/mobile"><img src="./server/.github/reactnative.svg" alt="React Native"/> </a> </p>
 
-## Estrutura de Pastas (Arquitetura MVC)
+## Sobre o Projeto
+
+**mindBalance** é uma aplicação desenvolvida para ajudar no monitoramento da saúde mental dos usuários.
+Com ela, é possível:
+
+- Registrar emoções diariamente.
+- Receber sugestões de autocuidado personalizadas.
+- Analisar padrões emocionais por meio de relatórios gerados automaticamente.
+
+## Estrutura do Projeto
+
+O sistema é composto por três principais aplicações:
+
+- Backend: Desenvolvido em Node.js para gerenciar a lógica de negócio.
+- Frontend: Construído com ReactJS para visualização e interação no navegador.
+- Mobile: Um aplicativo desenvolvido em React Native, ideal para uso em dispositivos móveis.
+
+Para mais detalhes sobre cada aplicação, clique nos ícones das tecnologias na seção de Tecnologias Utilizadas.
+
+## Como Contribuir
+
+Se você deseja contribuir para o projeto, siga os passos abaixo:
 
 ```bash
-/src
-  /controllers      # Controladores para cada funcionalidade
-    authController.ts         # Autenticação de usuário
-    billsController.ts        # Gerenciamento de contas
-    budgetController.ts       # Gerenciamento de orçamento
-    notificationsController.ts # Gerenciamento de lembretes
-    reportsController.ts      # Relatórios financeiros
-
-  /models           # Modelos (entidades do banco de dados)
-    User.ts         # Modelo de Usuário
-    Bill.ts         # Modelo de Conta
-    Budget.ts       # Modelo de Orçamento
-    Notification.ts # Modelo de Lembrete
-
-  /routes           # Definição das rotas da API
-    authRoutes.ts          # Rotas de autenticação
-    billsRoutes.ts         # Rotas de contas
-    budgetRoutes.ts        # Rotas de orçamento
-    notificationsRoutes.ts # Rotas de lembretes
-    reportsRoutes.ts       # Rotas de relatórios
-
-  /services         # Lógica de negócio
-    billService.ts           # Serviços relacionados às contas
-    budgetService.ts         # Serviços relacionados ao orçamento
-    notificationService.ts   # Serviços de lembretes
-    reportService.ts         # Serviços de relatórios
-    authService.ts           # Serviços de autenticação
-
-  /middlewares      # Middlewares para validação, autenticação, etc.
-    authMiddleware.ts       # Verificar se o usuário está autenticado
-
-  /config           # Configurações gerais
-    db.ts           # Configuração do banco de dados
-    email.ts        # Configuração de envio de emails
-    sms.ts          # Configuração para envio de SMS
-
-  /utils            # Utilitários e helpers
-    notificationUtils.ts # Funções para gerenciamento de notificações
-
-  app.ts            # Inicialização do servidor
-  routes.ts         # Definição das rotas principais
+Faça um fork deste repositório.
 ```
+
+Clone o fork para o seu ambiente local:
+
+```bash
+git clone link-do-seu-fork
+```
+
+Crie uma branch para a sua funcionalidade:
+bash
+
+```bash
+git checkout -b minha-feature
+```
+
+Realize as alterações e faça um commit:
+
+```bash
+git commit -m "feature: descrição da funcionalidade"
+```
+
+Envie para o seu repositório remoto:
+
+```bash
+git push origin minha-feature
+```
+
+Abra um Pull Request no repositório original.
+
+## Licença
+
+Este projeto está sob a licença MIT. Para mais detalhes, leia o arquivo LICENSE.
