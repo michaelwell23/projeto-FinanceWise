@@ -1,20 +1,19 @@
 # mindBalance
 
-<p align="center"> <img alt="mindBalance" title="mindBalance" src="./server/.github/logo.png" width="400px" /> </p> <p align="center"> <img alt="Contagem de linguagens do GitHub" src="https://img.shields.io/github/languages/count/seu-usuario/mindbalance?color=%2304D361"> <img alt="Licença" src="https://img.shields.io/badge/licença-MIT-%2304D361"> <a href="https://github.com/seu-usuario/mindbalance/stargazers"> <img alt="Stargazers" src="https://img.shields.io/github/stars/seu-usuario/
-mindbalance?style=social"> </a> </p>
+<p align="center"> <img alt="mindBalance" title="mindBalance" src="./server/.github/logo.png" width="400px" /> </p> <p align="center"> <img alt="Contagem de linguagens do GitHub" src="https://img.shields.io/github/languages/count/seu-usuario/mindbalance?color=%2304D361"> <img alt="Licença" src="https://img.shields.io/badge/licença-MIT-%2304D361"> <a href="https://github.com/seu-usuario/mindbalance/stargazers"></a> </p>
 
 ## Tecnologias Utilizadas
 
-<p align="center"> <a href="https://github.com/seu-usuario/mindbalance/tree/main/server"><img src="./server/.github/nodejs.svg" alt="Node.Js" /> </a>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<p align="center"> <a href="https://github.com/seu-usuario/mindbalance/tree/main/server"><img src="https://raw.githubusercontent.com/michaelwell23/projeto-servico-de-entregas/master/server/.github/nodejs.svg" alt="Node.Js" /> </a>&nbsp;&nbsp;&nbsp;&nbsp;</p>
 
 ## Sobre o Projeto
 
-**mindBalance** é uma aplicação desenvolvida para ajudar no monitoramento da saúde mental dos usuários.
-Com ela, é possível:
+*mindBalance* é uma aplicação desenvolvida para facilitar o controle financeiro dos usuários. Com ela, é possível:
 
-- Registrar emoções diariamente.
-- Receber sugestões de autocuidado personalizadas.
-- Analisar padrões emocionais por meio de relatórios gerados automaticamente.
+- Registrar e Gerenciar Despesas: Categorize seus gastos e acompanhe suas finanças de forma organizada.
+- Definir Orçamentos: Estabeleça limites para seus gastos mensais e receba alertas caso esteja perto de excedê-los.
+- Receber Lembretes de Vencimento: Configure datas de vencimento de contas e receba notificações automáticas quando estiverem próximas.
+- Gerar Relatórios Financeiros: Visualize análises detalhadas de seus hábitos financeiros para tomar decisões mais inteligentes.
 
 ## Estrutura do Projeto
 
