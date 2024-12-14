@@ -5,7 +5,7 @@ mindbalance?style=social"> </a> </p>
 
 ## Tecnologias Utilizadas
 
-<p align="center"> <a href="https://github.com/seu-usuario/mindbalance/tree/main/server"><img src="./server/.github/nodejs.svg" alt="Node.Js" /> </a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://github.com/seu-usuario/mindbalance/tree/main/web"><img src="./server/.github/reactjs.svg" alt="ReactJS"> </a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://github.com/seu-usuario/mindbalance/tree/main/mobile"><img src="./server/.github/reactnative.svg" alt="React Native"/> </a> </p>
+<p align="center"> <a href="https://github.com/seu-usuario/mindbalance/tree/main/server"><img src="./server/.github/nodejs.svg" alt="Node.Js" /> </a>&nbsp;&nbsp;&nbsp;&nbsp;</p>
 
 ## Sobre o Projeto
 
